@@ -32,19 +32,16 @@ public class AmbientServlet extends HttpServlet {
 	String PAGINA_NUEVOSENSOR = "/ambientNewMedidor.jsp";
 	String PAGINA_ADMIN_INICIO = "/adminInicio.jsp";
 	String PAGINA_CONTACTO = "ambientContacto.jsp";
-	//String PAGINA_CUENTAS = "/lstCuentas.jsp";
-	/*String PAGINA_OBRAS = "/temporal.jsp";
-	String PAGINA_OPERACIONES = "/operaciones.jsp";
-	String PAGINA_LOGIN = "/login.jsp";
-	String PAGINA_CLIENTES = "/clientes.jsp";
-	String PAGINA_CUENTAS = "/cuentas.jsp";
-	String PAGINA_SALUDO = "/saludo.jsp";*/
+	String PAGINA_OPERACIONES = "/ambientAdmin.jsp";
+	String PAGINA_NUEVO_SENSOR = "/ambientNewMedidor.jsp";
+	String PAGINA_CONSULTA_SENSOR ="/ambientDatosMedidor.jsp";
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AmbientServlet() {
-        super();
-        //dao = new SensorDAOImplementation();
+        //super();
+        dao = new SensorDAOImplementation();
     }
 
     
@@ -90,8 +87,16 @@ public class AmbientServlet extends HttpServlet {
 		else if (action.equalsIgnoreCase("admin")){
 			//System.out.println(request.getAttribute("Destino"));
 			System.out.println("Pagina de Operaciones");
-			//paginaForward = SERVLET_OPERACIONES;
+			paginaForward = PAGINA_OPERACIONES;
 			System.out.println(paginaForward);
+		}
+		else if(action.equalsIgnoreCase("newMedidor")){
+			paginaForward = PAGINA_NUEVO_SENSOR;
+		}
+		else if (action.equalsIgnoreCase("viewMedidor")){
+			Medidor unMedidor = new Medidor();
+			request.setAttribute("unSensor", unMedidor);
+			paginaForward = PAGINA_CONSULTA_SENSOR;
 		}
 		else if (action.equalsIgnoreCase("contacto")){
 			System.out.println("Pagina de Administración de Sensores");
@@ -140,19 +145,18 @@ public class AmbientServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String forward= "";
-		String action = request.getParameter("action");
+		//String action = request.getParameter("form");
 		String sensorId = "";
 		
-		if (action.equalsIgnoreCase("FetchSensor"))
+		if(request.getParameterMap().containsKey("sensorFind")!=false) 
 		{
 			Medidor unMedidor = new Medidor();
 			sensorId = request.getParameter("sensorFind");
+			//System.out.println(sensorId);
 			dao.getSensorById(sensorId, unMedidor);
 			request.setAttribute("unSensor", unMedidor);
 			forward = PAGINA_CONSULTAS;
-			RequestDispatcher view = request.getRequestDispatcher(forward);
-			view.forward(request, response);
-		} else if (action.equalsIgnoreCase("addSensor")) {
+		} else if (request.getParameterMap().containsKey("newId")!=false)  {
 			float longitud, latitud;
 		
 			SensorData unSensorData = new SensorData();
@@ -161,7 +165,9 @@ public class AmbientServlet extends HttpServlet {
 			unSensorData.setLatitud(latitud);
 			longitud = Float.parseFloat(request.getParameter("newLongitud"));
 			unSensorData.setLongitud(longitud);
-			forward = PAGINA_ADMIN_INICIO;
+			dao.addSensor(unSensorData);
+			forward = PAGINA_OPERACIONES;
+			
 			
 		       /* Student student = new Student();
 		        student.setFirstName( request.getParameter( "firstName" ) );
@@ -179,7 +185,11 @@ public class AmbientServlet extends HttpServlet {
 		        RequestDispatcher view = request.getRequestDispatcher( lIST_STUDENT );
 		        request.setAttribute("students", dao.getAllStudents());
 		        view.forward(request, response); */
+		} else {
+			forward = PAGINA_ADMIN_INICIO;
 		}
+		RequestDispatcher view = request.getRequestDispatcher(forward);
+		view.forward(request, response);
 
 	}
 }

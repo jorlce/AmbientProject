@@ -1,12 +1,8 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
+<%@ page import="com.ambient.controller.*,com.ambient.dao.*, com.ambient.model.*,java.util.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/AmbientTmp.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-
-<%@ page import="com.ambient.controller.*,com.ambient.dao.*, com.ambient.model.*,java.util.*" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" errorPage="/errores.jsp"%>
-    
+<head>    
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Untitled Document</title>
@@ -135,12 +131,17 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     </table> 
     
     <!-- end .header --></div>
+<%
+Medidor unMedidor;
+unMedidor = (Medidor) request.getAttribute("unSensor");
+if (unMedidor.getId()==""){
+%>
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
-    <h2 align="center" class="header"><strong>Administración</strong></h2>
+    <h2 align="center" class="header"><strong>AdministraciÃ³n</strong></h2>
     <div align="center"></div>
     <p>&nbsp;</p>
     <div align="center">
-    <form id="formFind" name="formFind" method="post" action="http://localhost:8080/AmbientDWP/servlet/AmbientServlet">
+    <form id="formFind" name="formFind" method="post" action="AmbientServlet">
       <div align="center">
         <table width="378" height="38" border="1" cellpadding="1">
           <tr>
@@ -148,21 +149,16 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
             <td width="208"><div align="center"><label>
               <input type="text" name="sensorFind" id="sensorFind" />
             </label></div></td>
-            <td><div align="center"><input type="button" name="buttonFind" id="buttonFind" value="Buscar" />
+            <td><div align="center"><input type="submit" name="buttonFind" id="buttonFind" value="Buscar" />
             </div></td>
           </tr>
         </table>
       </div>
     </form>
 <%
-Medidor unMedidor;
-unMedidor = (Medidor) request.getAttribute("unSensor");
-if (unMedidor.getId()==""){
-	System.out.println("No se encuentran valores para ese Sensor");
-}
-else {	
+} else {	
 %>
-      <form id="formProg" name="formProg" method="post" action="">
+      <form id="formProg" name="formProg" method="post" action="AmbientServlet">
         <table width="418" border="1" cellpadding="1">
           <tr>
             <td colspan="2"><div align="center">VALORES  MEDIDOR</div></td>

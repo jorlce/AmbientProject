@@ -117,10 +117,10 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     <div align="center">
       <table width="200" border="1" cellpadding="1">
         <tr>
-          <td><div align="center"><a href="#">Crear Medidor</a></div></td>
+          <td><div align="center"><a href="AmbientServlet?action=newMedidor">Crear Medidor</a></div></td>
         </tr>
         <tr>
-          <td><div align="center"><a href="#">Consultar Medidor</a></div></td>
+          <td><div align="center"><a href="AmbientServlet?action=viewMedidor">Consultar Medidor</a></div></td>
         </tr>
       </table>
     </div>

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
+<%@ page import="com.ambient.controller.*,com.ambient.dao.*, com.ambient.model.*,java.util.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/AmbientTmp.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -135,7 +136,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     <div align="center"></div>
     <p>&nbsp;</p>
     <div align="center">
-      <form id="formAddSensor" name="formAddSensor" method="post" action="addSensor">
+      <form id="formAddSensor" name="formAddSensor" method="post" action="AmbientServlet">
         <table width="289" border="1" cellpadding="1">
           <tr>
             <td colspan="2"><div align="center">VALORES NUEVO MEDIDOR</div></td>

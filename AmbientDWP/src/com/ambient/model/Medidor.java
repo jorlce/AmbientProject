@@ -10,7 +10,9 @@ public class Medidor {
 	protected float nivelCO2;
 	protected float nivelMetano;
 	
-	
+	public Medidor() {
+		id = "";
+	}
 	
 	public String getId() {
 		return id;
