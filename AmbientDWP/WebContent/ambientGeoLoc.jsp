@@ -10,6 +10,44 @@
 <!-- InstanceEndEditable -->
 <style type="text/css">
 <!--
+<script src="http://maps.google.com/maps?file=api&v=2&key=#TU LLAVE GOOGLE MAPS#" type="text/javascript"></script>
+<script type="text/javascript">
+   //<![CDATA[
+   
+   //función para cargar un mapa de Google. 
+   //Esta función se llama cuando la página se ha terminado de cargar. Evento onload
+   function load() {
+      //comprobamos si el navegador es compatible con los mapas de google
+      if (GBrowserIsCompatible()) {
+         //instanciamos un mapa con GMap, pasándole una referencia a la capa o <div> donde queremos mostrar el mapa
+         var map = new GMap2(document.getElementById("map"));   
+         //centramos el mapa en una latitud y longitud deseadas
+         map.setCenter(new GLatLng(40.407,-3.68), 5);   
+         //añadimos controles al mapa, para interacción con el usuario
+         map.addControl(new GLargeMapControl());
+        // map.addControl(new GMapTypeControl()); 
+        // map.addControl(new GOverviewMapControl()); ;
+        
+         //Marcadores de los sensores
+         // Recorrer la lista de sensores de la base de datos y asignarles un marcador en el mapa
+         // Tengo que buscar si se puede usar el código de GeoCoding dentro de código jsp o si es 
+         // sólo javascript
+        List<SensorData> listaSensores = request.getParameter(listaSensores);
+        Iterator it = listaSensores.iterator();
+        SensorData nuevoSEnsor;
+        float nuevaLatitud, nuevaLongitud;
+	    while (it.hasNext()){
+	 	  nuevoSensor =(SensorData)it.next();
+	   	   nuevaLatitud = nuevoSensor.getLatitud();
+	   	   nuevaLongitud = nuevoSensor.getLongitud();
+   			var point = new GPoint (-nuevaLatitud, nuevaLongitud); 
+   			var marker = new GMarker(point); 
+   			map.addOverlay(marker); 
+      	}
+   }
+   
+   //]]>
+ </script>
 body {
 	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
 	background-color: #66CC99;
@@ -97,7 +135,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 -->
 </style></head>
 
-<body bgcolor="#66CC99">
+<body bgcolor="#66CC99" onload="load()" onunload="GUnload()">
 
 <div class="container">
   <div class="header"><a href="#"></a>
@@ -112,9 +150,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     </table> 
     
     <!-- end .header --></div>
-  <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
-    <h1>&nbsp;</h1>
-  <!-- InstanceEndEditable --><!-- end .content --></div>
+	<div id="map" style="width: 615px; height: 400px"></div>
   <div class="footer">
     <p>Footer</p>
     <!-- end .footer --></div>

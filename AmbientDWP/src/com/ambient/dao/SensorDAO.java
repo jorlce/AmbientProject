@@ -5,8 +5,8 @@ import com.ambient.model.*;
  
 public interface SensorDAO {
     public void addSensor( SensorData sensor );
-    public void deleteSensor( int studentId );
+    public void deleteSensor( String unSensorId );
    // public void updateSensor( Medidor sensor );
-   //public List<Student> getAllStudents();
+    public List<SensorData> getAllSensors();
     public void getSensorById( String sensorId, Medidor medidor );
 }

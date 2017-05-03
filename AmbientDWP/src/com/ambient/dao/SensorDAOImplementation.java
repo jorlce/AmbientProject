@@ -41,11 +41,11 @@ public class SensorDAOImplementation implements SensorDAO {
     }
     
     @Override
-    public void deleteSensor( int sensorId ) {
+    public void deleteSensor( String unSensorId ) {
         try {
-            String query = "delete from Sensor_Values where idSensor_Values=?";
+            String query = "delete from sensor_id where idSensor_Values=?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, sensorId);
+            preparedStatement.setString(1, unSensorId);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -94,28 +94,26 @@ public class SensorDAOImplementation implements SensorDAO {
             e.printStackTrace();
         }
     }
+ */
     @Override
-    public List<Student> getAllStudents() {
-        List<Student> students = new ArrayList<Student>();
+    public List<SensorData> getAllSensors() {
+        List<SensorData> listaSensores = new ArrayList<SensorData>();
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery( "select * from student" );
+            ResultSet resultSet = statement.executeQuery( "select * from sensor_id" );
             while( resultSet.next() ) {
-                Student student = new Student();
-                student.setStudentId( resultSet.getInt( "studentId" ) );
-                student.setFirstName( resultSet.getString( "firstName" ) );
-                student.setLastName( resultSet.getString( "lastName" ) );
-                student.setCourse( resultSet.getString( "course" ) );
-                student.setYear( resultSet.getInt( "year" ) );
-                students.add(student);
+                SensorData unSensorData = new SensorData();
+                unSensorData.setId( resultSet.getString( "idsensor_ID" ) );
+                unSensorData.setLatitud( resultSet.getFloat( "Latitud" ) );
+                unSensorData.setLongitud( resultSet.getFloat( "Longitud" ) );
+                listaSensores.add(unSensorData);
             }
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return students;
+        return listaSensores;
     }
     
- */
 }
