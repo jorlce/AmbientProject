@@ -15,6 +15,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.MapsId;
 
 
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -114,6 +115,38 @@ class LecturaSensor implements Serializable {
 
    //implements equals and hashCode
    
+   @Override
+   public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result
+			+ ((idSensor_ID_Value == null) ? 0 : idSensor_ID_Value.hashCode());
+	result = prime * result + ((lectura == null) ? 0 : lectura.hashCode());
+	return result;
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	LecturaSensor other = (LecturaSensor) obj;
+	if (idSensor_ID_Value == null) {
+		if (other.idSensor_ID_Value != null)
+			return false;
+	} else if (!idSensor_ID_Value.equals(other.idSensor_ID_Value))
+		return false;
+	if (lectura == null) {
+		if (other.lectura != null)
+			return false;
+	} else if (!lectura.equals(other.lectura))
+		return false;
+	return true;
+   }
+
    public LecturaSensor(Timestamp lectura, String sensorId) {
        this.lectura = lectura;
        this.idSensor_ID_Value = sensorId;
