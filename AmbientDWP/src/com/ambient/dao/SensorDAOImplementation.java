@@ -81,13 +81,10 @@ public class SensorDAOImplementation implements SensorDAO {
     @Override
     public void updateSensor( Medidor sensor ) {
         try {
-            String query = "update Sensor_Values set firstName=?, lastName=?, course=?, year=? where studentId=?";
+            String query = "update Sensor_Values set latitud=?, longitud=? where idsensor_ID=?";
             PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setString( 1, student.getFirstName() );
-            preparedStatement.setString( 2, student.getLastName() );
-            preparedStatement.setString( 3, student.getCourse() );
-            preparedStatement.setInt( 4, student.getYear() );
-            preparedStatement.setInt(5, student.getStudentId());
+            preparedStatement.setString( 1, sensor.getLatitud() );
+            preparedStatement.setString( 2, student.getLongitud() );
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {

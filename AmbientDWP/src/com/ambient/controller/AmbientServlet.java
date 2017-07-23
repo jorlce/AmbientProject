@@ -19,12 +19,12 @@ public class AmbientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SensorDAO dao;
     
-	// Datos Miembro (1 sola instancia)
+	// Member data (1 instance only)
 	HttpSession miSesion;
 	String paginaForward = "";
 	String paginaDestino = "";
 	
-	// Constantes para Pistas y Nombres de Paginas JSP de la aplicacion
+	// Names and clues for JSP pages
 	String PAGINA_ERROR = "/errores.jsp";
 	String PAGINA_ESTADISTICAS = "/ambientStatistics.jsp";
 	String PAGINA_CONSULTAS ="/ambientDatosMedidor.jsp";
@@ -45,11 +45,6 @@ public class AmbientServlet extends HttpServlet {
     }
 
     
-/*    public void service(HttpServletRequest request,HttpServletResponse response)
-    		throws ServletException,IOException{ 	
-    		// Declaraciones locales
-    		
-    	}*/
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -68,14 +63,7 @@ public class AmbientServlet extends HttpServlet {
 			System.out.println("Primera vez");
 			paginaForward = PAGINA_ADMIN_INICIO;
 		}
-		/*
-		else if (request.getParameter("ahref").equals("login")){
-			System.out.println("Pagina de Login");
-			miSesion.invalidate();
-			paginaForward = PAGINA_LOGIN;
-			
-			//paginaForward = "/principal.jsp";
-		}*/
+	
 		else if (action.equalsIgnoreCase("statistics")){
 			System.out.println("Pagina de Administración de Sensores");
 			paginaForward = PAGINA_ESTADISTICAS;
@@ -108,33 +96,11 @@ public class AmbientServlet extends HttpServlet {
 				registro(request);
 				paginaDestino = PAGINA_SALUDO;
 			}*/
-		// Hacer forward a la JSP Conveniente 
+		// Forward to the right jps page 
 		//request.setAttribute("Destino",paginaDestino);
 		rd = request.getRequestDispatcher(paginaForward);
 		rd.forward(request,response);
-		 /*  String forward = "";
-        String action = request.getParameter( "action" );
- 
-        if( action.equalsIgnoreCase( "delete" ) ) {
-            forward = lIST_STUDENT;
-            int studentId = Integer.parseInt( request.getParameter("studentId") );
-            dao.deleteStudent(studentId);
-            request.setAttribute("students", dao.getAllStudents() );
-        }
-        else if( action.equalsIgnoreCase( "edit" ) ) {
-            forward = INSERT_OR_EDIT;
-            int studentId = Integer.parseInt( request.getParameter("studentId") );
-            Student student = dao.getStudentById(studentId);
-            request.setAttribute("student", student);
-        }
-        else if( action.equalsIgnoreCase( "insert" ) ) {
-            forward = INSERT_OR_EDIT;
-        }
-        else {
-            forward = lIST_STUDENT;
-            request.setAttribute("students", dao.getAllStudents() );
-        }
-        */
+		
         RequestDispatcher view = request.getRequestDispatcher( paginaForward );
         view.forward(request, response); 
 	}
@@ -148,7 +114,7 @@ public class AmbientServlet extends HttpServlet {
 		//String action = request.getParameter("form");
 		String sensorId = "";
 		
-		if(request.getParameterMap().containsKey("sensorFind")!=false) 
+		if(request.getParameterMap().containsKey("sensorFind")!=false)  			// Return a given Sensor
 		{
 			Medidor unMedidor = new Medidor();
 			sensorId = request.getParameter("sensorFind");
@@ -156,7 +122,7 @@ public class AmbientServlet extends HttpServlet {
 			dao.getSensorById(sensorId, unMedidor);
 			request.setAttribute("unSensor", unMedidor);
 			forward = PAGINA_CONSULTAS;
-		} else if (request.getParameterMap().containsKey("newId")!=false)  {
+		} else if (request.getParameterMap().containsKey("newId")!=false)  {  // Create a new Sensor
 			float longitud, latitud;
 		
 			SensorData unSensorData = new SensorData();
@@ -169,22 +135,6 @@ public class AmbientServlet extends HttpServlet {
 			forward = PAGINA_OPERACIONES;
 			
 			
-		       /* Student student = new Student();
-		        student.setFirstName( request.getParameter( "firstName" ) );
-		        student.setLastName( request.getParameter( "lastName" ) );
-		        student.setCourse( request.getParameter( "course" ) );
-		        student.setYear( Integer.parseInt( request.getParameter( "year" ) ) );
-		        String studentId = request.getParameter("studentId");
-		 
-		        if( studentId == null || studentId.isEmpty() )
-		            dao.addStudent(student);
-		        else {
-		            student.setStudentId( Integer.parseInt(studentId) );
-		            dao.updateStudent(student);
-		        }
-		        RequestDispatcher view = request.getRequestDispatcher( lIST_STUDENT );
-		        request.setAttribute("students", dao.getAllStudents());
-		        view.forward(request, response); */
 		} else {
 			forward = PAGINA_ADMIN_INICIO;
 		}

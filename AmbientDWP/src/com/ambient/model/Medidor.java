@@ -1,5 +1,6 @@
 package com.ambient.model;
 
+//Bean for table sensor_values
 public class Medidor {
 
 	protected String id;

@@ -1,5 +1,6 @@
 package com.ambient.model;
 
+//Bean for table sensor_id
 public class SensorData {
 	
 	protected String idSensor_ID;
