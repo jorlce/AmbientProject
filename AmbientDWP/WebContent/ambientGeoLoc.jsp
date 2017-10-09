@@ -150,6 +150,25 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     </table> 
     
     <!-- end .header --></div>
+     <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
+    <table width="200" border="1" cellpadding="1">
+      <tr>
+        <td><table width="200" border="1" cellpadding="1">
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+        </table></td>
+        <td><div id="map" style="width: 615px; height: 400px"></div></td>
+      </tr>
+    </table>
+    <h1>&nbsp;</h1>
+  <!-- InstanceEndEditable --><!-- end .content --></div>
 	<div id="map" style="width: 615px; height: 400px"></div>
   <div class="footer">
     <p>Footer</p>

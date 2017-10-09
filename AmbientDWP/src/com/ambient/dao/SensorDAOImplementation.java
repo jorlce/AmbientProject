@@ -30,7 +30,7 @@ public class SensorDAOImplementation implements SensorDAO {
         	
             String query = "insert into sensor_id (idsensor_ID, Longitud, Latitud) values (?,?,?)";
             PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setString( 1, unSensorData.getId() );
+            preparedStatement.setString( 1, unSensorData.getSensorlabel() );
             preparedStatement.setFloat( 2, unSensorData.getLongitud());
             preparedStatement.setFloat( 3, unSensorData.getLatitud());
             preparedStatement.executeUpdate();
@@ -57,13 +57,13 @@ public class SensorDAOImplementation implements SensorDAO {
     public void getSensorById(String sensorId, Medidor medidor) {
         //Medidor medidor = new Medidor();
         try {
-            String query = "select * from sensor_values where idSensor_ID_Value=? order by Lectura DESC limit 1";
+            String query = "select * from sensor_values where sensoridfk=? order by Lectura DESC limit 1";
             PreparedStatement preparedStatement = conn.prepareStatement( query );
             preparedStatement.setString(1, sensorId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
-            	System.out.println(resultSet.getString("idSensor_ID_Value"));
-                medidor.setId( resultSet.getString( "idSensor_ID_Value" ) );
+            	System.out.println(resultSet.getString("sensoridfk"));
+                medidor.setSensorlabel(resultSet.getString( "sensoridfk" ) );
                 medidor.setNivelCO( resultSet.getFloat( "NivelCO" ) );
                 medidor.setNivelCO2( resultSet.getFloat( "NivelCO2" ) );
                 medidor.setNivelMetano( resultSet.getFloat( "NivelMetano" ) );
@@ -97,7 +97,7 @@ public class SensorDAOImplementation implements SensorDAO {
         List<SensorData> listaSensores = new ArrayList<SensorData>();
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery( "select * from sensor_id" );
+            ResultSet resultSet = statement.executeQuery( "select * from sensorid" );
             while( resultSet.next() ) {
                 SensorData unSensorData = new SensorData();
                 unSensorData.setId( resultSet.getString( "idsensor_ID" ) );

@@ -3,7 +3,7 @@ package com.ambient.model;
 //Bean for table sensor_id
 public class SensorData {
 	
-	protected String idSensor_ID;
+	protected String sensorlabel;
 
 	protected float latitud;
 	protected float longitud;
@@ -25,12 +25,12 @@ public class SensorData {
 	}
 	
 	
-	public String getId() {
-		return idSensor_ID;
+	public String getSensorlabel() {
+		return sensorlabel;
 	}
 
-	public void setId(String idSensor_ID) {
-		this.idSensor_ID = idSensor_ID;
+	public void setId(String sensorlabel) {
+		this.sensorlabel = sensorlabel;
 	}
 
 

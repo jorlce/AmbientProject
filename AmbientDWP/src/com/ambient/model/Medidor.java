@@ -1,26 +1,46 @@
 package com.ambient.model;
 
+import java.sql.Timestamp;
+
 //Bean for table sensor_values
 public class Medidor {
 
-	protected String id;
-	
+	protected long idLectura;
+	protected Timestamp timelectura;
 	protected float temperatura;
 	protected float humedad;
 	protected float nivelCO;
 	protected float nivelCO2;
 	protected float nivelMetano;
+	protected String sensorlabel;
+
 	
-	public Medidor() {
-		id = "";
-	}
-	
-	public String getId() {
-		return id;
+	public Timestamp getTimelectura() {
+		return timelectura;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTimelectura(Timestamp timelectura) {
+		this.timelectura = timelectura;
+	}
+
+	public void setTemperatura(float temperatura) {
+		this.temperatura = temperatura;
+	}
+
+	public String getSensorlabel() {
+		return sensorlabel;
+	}
+
+	public void setSensorlabel(String sensorlabel) {
+		this.sensorlabel = sensorlabel;
+	}
+
+	public void setIdLectura(long idLectura) {
+		this.idLectura = idLectura;
+	}
+	
+	public long getIdLectura() {
+		return idLectura;
 	}
 
 	public float getTemperature() {

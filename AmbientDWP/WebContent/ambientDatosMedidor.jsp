@@ -134,30 +134,16 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 <%
 Medidor unMedidor;
 unMedidor = (Medidor) request.getAttribute("unSensor");
-if (unMedidor.getId()==""){
+if (unMedidor.getSensorlabel()==""){
+	System.out.println("Datos de Sensor vacios en ambientDatosMedidor.jsp");
+
+} else {	
 %>
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
     <h2 align="center" class="header"><strong>Administración</strong></h2>
     <div align="center"></div>
     <p>&nbsp;</p>
     <div align="center">
-    <form id="formFind" name="formFind" method="post" action="AmbientServlet">
-      <div align="center">
-        <table width="378" height="38" border="1" cellpadding="1">
-          <tr>
-            <td width="154"><div align="center">Sensor</div></td>
-            <td width="208"><div align="center"><label>
-              <input type="text" name="sensorFind" id="sensorFind" />
-            </label></div></td>
-            <td><div align="center"><input type="submit" name="buttonFind" id="buttonFind" value="Buscar" />
-            </div></td>
-          </tr>
-        </table>
-      </div>
-    </form>
-<%
-} else {	
-%>
       <form id="formProg" name="formProg" method="post" action="AmbientServlet">
         <table width="418" border="1" cellpadding="1">
           <tr>
@@ -165,49 +151,41 @@ if (unMedidor.getId()==""){
           </tr>
           <tr>
             <td width="172"><label>
-              <div align="center">Identificador              
-              </div>
-            </label></td>
+              <div align="center">Identificador</div></label></td>
             <td width="230"><div align="center">
-              <%=unMedidor.getId() %> />
+              <%=unMedidor.getSensorlabel() %> />
             </div></td>
           </tr>
           <tr>
             <td><label>
-              <div align="center">Temperatura</div>
-            </label></td>
+              <div align="center">Temperatura</div></label></td>
             <td><div align="center">
               <%=unMedidor.getTemperature() %>
             </div></td>
           </tr>
           <tr>
             <td><label>
-              <div align="center">Humedad</div>
-            </label></td>
+              <div align="center">Humedad</div></label></td>
             <td><div align="center">
               <%=unMedidor.getHumedad() %>
             </div></td>
           </tr>
           <tr>
-            <td><label>
-              <div align="center">Nivel CO</div>
-            </label></td>
+            <td><label><div align="center">Nivel CO</div></label></td>
             <td><div align="center">
               <%=unMedidor.getNivelCO() %>
             </div></td>
           </tr>
           <tr>
             <td><label>
-              <div align="center">Nivel CO2</div>
-            </label></td>
+              <div align="center">Nivel CO2</div></label></td>
             <td><div align="center">
               <%=unMedidor.getNivelCO2() %>
             </div></td>
           </tr>
           <tr>
             <td><label>
-              <div align="center">Nivel Metano</div>
-            </label></td>
+              <div align="center">Nivel Metano</div></label></td>
             <td><div align="center">
               <%=unMedidor.getNivelMetano() %>
             </div></td>
@@ -217,12 +195,15 @@ if (unMedidor.getId()==""){
               <input type="button" name="accept" id="accept" value="Programar" />
             </div></td>
             <td><div align="center">
-              <input type="button" name="cancel" id="cancel" value="Cerrar" />
+              <input type="button" name="volver" id="volver" value="volver" />
             </div></td>
           </tr>
         </table>
       </form>
-<%} %>
+<%} 
+String volver="AmbientServlet?action=consultMedidor";
+%>
+	<a href="<%=volver%>" align="center">VOLVER &raquo;</a>
     </div>
     <p>&nbsp;</p>
     <p>&nbsp;</p>

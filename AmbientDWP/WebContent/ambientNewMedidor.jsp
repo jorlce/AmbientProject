@@ -143,9 +143,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
           </tr>
           <tr>
             <td width="92"><label>
-              <div align="center">Identificador
-                
-              </div>
+              <div align="center">Identificador</div>
             </label></td>
             <td width="181"><div align="center">
               <input name="newId" type="text" id="newId" maxlength="20" />
