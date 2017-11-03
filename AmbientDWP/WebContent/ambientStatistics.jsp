@@ -8,6 +8,55 @@
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages': ['table','corechart']});
+	google.charts.setOnLoadCallback(drawSort);
+	function drawSort() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Name');
+		data.addColumn('number', 'Salary');
+		data.addColumn('boolean', 'Full Time');
+		
+		data.addRows(5);
+		data.setCell(0, 0, 'John');
+		data.setCell(0, 1, 10000);
+		data.setCell(0, 2, true);
+		data.setCell(1, 0, 'Mary');
+		data.setCell(1, 1, 25000);
+		data.setCell(1, 2, true);
+		data.setCell(2, 0, 'Steve');
+		data.setCell(2, 1, 8000);
+		data.setCell(2, 2, false);
+		data.setCell(3, 0, 'Ellen');
+		data.setCell(3, 1, 20000);
+		data.setCell(3, 2, true);
+		data.setCell(4, 0, 'Mike');
+		data.setCell(4, 1, 12000);
+		data.setCell(4, 2, false);
+		
+		
+		var formatter = new google.visualization.NumberFormat({prefix: '$'});
+		formatter.format(data, 1); // Apply formatter to second column
+		
+		var view = new google.visualization.DataView(data);
+		view.setColumns([0, 1]);
+		
+		var table = new google.visualization.Table(document.getElementById('table_sort_div'));
+		table.draw(view,{width: '100%', height: '100%'});
+		
+		var chart = new google.visualization.BarChart(document.getElementById('chart_sort_div'));
+		chart.draw(view);
+		
+		google.visualization.events.addListener(table, 'sort',
+		    function(event) {
+		      data.sort([{column: event.column, desc: !event.ascending}]);
+		      chart.draw(view);
+		    });
+	}
+
+</script>
 <style type="text/css">
 <!--
 body {
@@ -114,6 +163,18 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     <!-- end .header --></div>
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
     <h1>&nbsp;</h1>
+    <table align="center">
+      <tr valign="top">
+        <td>
+          <div id="table_sort_div" style="align: center; width: 700px; height: 300px;"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id="chart_sort_div" style="align: center; width: 700px; height: 300px;"></div>
+        </td>
+      </tr>
+    </table>
   <!-- InstanceEndEditable --><!-- end .content --></div>
   <div class="footer">
     <p>Footer</p>

@@ -60,7 +60,7 @@ public class SensorJSONImplementation implements SensorJSON {
 	}
 	
 	//Returns the measure data of the sensor from Json sent by the service
-	public Medidor findSensorMeasure(String measureJson) {
+/*	public Medidor findSensorMeasure(String measureJson) {
 		ObjectMapper mapper = new ObjectMapper();
 		Medidor unMeasure = null;
 		try {
@@ -75,7 +75,7 @@ public class SensorJSONImplementation implements SensorJSON {
 			e.printStackTrace();
 		}
 		return unMeasure;
-	}
+	}*/
 	
 	public List<SensorData> listaSensores(String arraySensorJson) {
 		System.out.println("Dentro de Jdao");
@@ -95,5 +95,47 @@ public class SensorJSONImplementation implements SensorJSON {
 			e.printStackTrace();
 		}
 		return listaSensores;
+	}
+	
+	//Returns the measure data of the sensor from Json sent by the service
+	public Medidor findSensorMeasure(String JsonMeasure ){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Medidor unMedidor = new Medidor();
+		SensorData unSensor = new SensorData();
+		
+		try {
+			JsonNode root = mapper.readTree(JsonMeasure);
+			
+			    // Get measure values
+				unMedidor.setTimelectura(root.path("timelectura").longValue());
+				unMedidor.setTemperatura(root.path("temperatura").floatValue()); 
+				unMedidor.setHumedad(root.path("humedad").floatValue()); 
+				unMedidor.setNivelCO(root.path("nivelCO").floatValue()); 
+				unMedidor.setNivelCO2(root.path("nivelCO2").floatValue()); 
+				unMedidor.setNivelMetano(root.path("metano").floatValue()); 
+				
+				
+				//System.out.println("id : ");
+
+				// Get Sensor values
+				JsonNode sensorNode = root.path("sensorID");
+				if (sensorNode.isMissingNode()) {
+					// if "name" node is missing
+				} else {
+					unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
+					unSensor.setId(unMedidor.getSensorlabel());
+					unSensor.setLatitud(sensorNode.path("latitud").floatValue());
+					unSensor.setLongitud(sensorNode.path("longitud").floatValue());
+				}
+			
+		}catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return unMedidor;
 	}
 }

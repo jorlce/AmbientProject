@@ -1,12 +1,22 @@
 package com.ambient.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
+
+
+
+
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 //Bean for table sensor_values
 public class Medidor {
 
 	protected long idLectura;
-	protected Timestamp timelectura;
+	protected long timelectura;
 	protected float temperatura;
 	protected float humedad;
 	protected float nivelCO;
@@ -14,12 +24,17 @@ public class Medidor {
 	protected float nivelMetano;
 	protected String sensorlabel;
 
-	
-	public Timestamp getTimelectura() {
-		return timelectura;
+	//Returns the Timestamp in format ('dd MM YY hh:mm')
+	public String getTimelectura() {
+		LocalDateTime localDateTime = new LocalDateTime(timelectura);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
+	    String sqlTimeString = fmt.print(localDateTime);
+	    System.out.println(sqlTimeString);
+		//Date trueDate = localDateTime.toDate(DateTimeZone.UTC.toTimeZone());
+		return sqlTimeString;
 	}
 
-	public void setTimelectura(Timestamp timelectura) {
+	public void setTimelectura(long timelectura) {
 		this.timelectura = timelectura;
 	}
 

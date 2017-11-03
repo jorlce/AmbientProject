@@ -10,43 +10,61 @@
 <!-- InstanceEndEditable -->
 <style type="text/css">
 <!--
-<script src="http://maps.google.com/maps?file=api&v=2&key=#TU LLAVE GOOGLE MAPS#" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&v=2&key=AIzaSyAPbBpKkcg2ViWEeA7-yg9FgijcwI7nm4M" type="text/javascript"></script>
 <script type="text/javascript">
-   //<![CDATA[
-   
-   //función para cargar un mapa de Google. 
-   //Esta función se llama cuando la página se ha terminado de cargar. Evento onload
-   function load() {
-      //comprobamos si el navegador es compatible con los mapas de google
-      if (GBrowserIsCompatible()) {
-         //instanciamos un mapa con GMap, pasándole una referencia a la capa o <div> donde queremos mostrar el mapa
-         var map = new GMap2(document.getElementById("map"));   
-         //centramos el mapa en una latitud y longitud deseadas
-         map.setCenter(new GLatLng(40.407,-3.68), 5);   
-         //añadimos controles al mapa, para interacción con el usuario
-         map.addControl(new GLargeMapControl());
-        // map.addControl(new GMapTypeControl()); 
-        // map.addControl(new GOverviewMapControl()); ;
-        
-         //Marcadores de los sensores
-         // Recorrer la lista de sensores de la base de datos y asignarles un marcador en el mapa
-         // Tengo que buscar si se puede usar el código de GeoCoding dentro de código jsp o si es 
-         // sólo javascript
-        List<SensorData> listaSensores = request.getParameter(listaSensores);
-        Iterator it = listaSensores.iterator();
-        SensorData nuevoSEnsor;
-        float nuevaLatitud, nuevaLongitud;
-	    while (it.hasNext()){
-	 	  nuevoSensor =(SensorData)it.next();
-	   	   nuevaLatitud = nuevoSensor.getLatitud();
-	   	   nuevaLongitud = nuevoSensor.getLongitud();
-   			var point = new GPoint (-nuevaLatitud, nuevaLongitud); 
-   			var marker = new GMarker(point); 
-   			map.addOverlay(marker); 
-      	}
+ 
+ 	  
+      /*google.charts.setOnLoadCallback(initialize); 
+
+       function initialize() {
+        // The URL of the spreadsheet to source data from.
+        var query = new google.visualization.Query(
+            'https://spreadsheets.google.com/pub?key=pCQbetd-CptF0r8qmCOlZGg');
+        query.send(draw);
+      } */
+      
+      	function load() {
+	       /*  if (response.isError()) {
+	          alert('Error in query');
+	        } */
+	      if (GBrowserIsCompatible()) {  
+	      
+	        google.charts.load('current', {'packages': ['table', 'map']});
+	        
+	        var geoData = google.visualization.arrayToDataTable([
+	          ['Latitud', 'Longitud', 'Sensor'],
+	          [51.5072, -0.1275, 'SPA001'],
+	          [48.8567, 2.3508, 'SPA002'],
+	          [55.7500, 37.6167, 'SPA003']]);
+	          
+	        var geoView = new google.visualization.DataView(geoData);
+        	geoView.setColumns([0, 1]);
+        	
+        	 var table = new google.visualization.Table(document.getElementById('table_div'));
+        	table.draw(geoData, {showRowNumber: false, width: '100%', height: '100%'});
+        	
+        	var map = new google.visualization.Map(document.getElementById('map_div'));
+        	map.draw(geoView, {showTip: true});
+
+        	// Set a 'select' event listener for the table.
+        	// When the table is selected, we set the selection on the map.
+        	google.visualization.events.addListener(table, 'select',
+            function() {
+              map.setSelection(table.getSelection());
+            });
+            
+             // Set a 'select' event listener for the map.
+       		 // When the map is selected, we set the selection on the table.
+        	google.visualization.events.addListener(map, 'select',
+            function() {
+              table.setSelection(map.getSelection());
+            });
+        } else {
+        	System.out.println("Navegador no compatible");
+        }
+        	
    }
    
-   //]]>
  </script>
 body {
 	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
@@ -151,25 +169,19 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     
     <!-- end .header --></div>
      <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
-    <table width="200" border="1" cellpadding="1">
-      <tr>
-        <td><table width="200" border="1" cellpadding="1">
-          <tr>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-          </tr>
-        </table></td>
-        <td><div id="map" style="width: 615px; height: 400px"></div></td>
+    <table align="center">
+      <tr valign="top">
+        <td style="width: 50%;">
+          <div id="map_div" style="width: 400px; height: 300;"></div>
+        </td>
+        <td style="width: 50%;">
+          <div id="table_div"></div>
+        </td>
       </tr>
     </table>
     <h1>&nbsp;</h1>
   <!-- InstanceEndEditable --><!-- end .content --></div>
-	<div id="map" style="width: 615px; height: 400px"></div>
+	
   <div class="footer">
     <p>Footer</p>
     <!-- end .footer --></div>

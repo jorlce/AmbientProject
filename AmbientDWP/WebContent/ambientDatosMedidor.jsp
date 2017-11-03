@@ -131,19 +131,35 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     </table> 
     
     <!-- end .header --></div>
+    <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
+    	<h2 align="center" class="header"><strong>Administración</strong></h2>
+    	<div align="center"></div>
+    	<p>&nbsp;</p>
+    	<div align="center">
 <%
-Medidor unMedidor;
+Medidor unMedidor = null;
 unMedidor = (Medidor) request.getAttribute("unSensor");
-if (unMedidor.getSensorlabel()==""){
+if (unMedidor == null){
 	System.out.println("Datos de Sensor vacios en ambientDatosMedidor.jsp");
-
-} else {	
 %>
-  <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
-    <h2 align="center" class="header"><strong>Administración</strong></h2>
-    <div align="center"></div>
-    <p>&nbsp;</p>
-    <div align="center">
+	 <table width="418" border="1" cellpadding="1">
+	     <tr>
+	       <td colspan="2"><div align="center">VALORES  MEDIDOR</div></td>
+	     </tr>
+	     <tr>
+	       <td colspan="2"><div align="center">NO HAY DATO DEL SENSOR</div></td>
+	     </tr>
+      </table>
+<%
+} else {	
+	System.out.println("Medidor:");
+	System.out.println(unMedidor.getSensorlabel());
+	System.out.println(unMedidor.getTemperature());
+	System.out.println(unMedidor.getHumedad());
+	System.out.println(unMedidor.getNivelCO());
+	System.out.println(unMedidor.getNivelCO2());
+	System.out.println(unMedidor.getNivelMetano());
+%>
       <form id="formProg" name="formProg" method="post" action="AmbientServlet">
         <table width="418" border="1" cellpadding="1">
           <tr>
@@ -153,7 +169,7 @@ if (unMedidor.getSensorlabel()==""){
             <td width="172"><label>
               <div align="center">Identificador</div></label></td>
             <td width="230"><div align="center">
-              <%=unMedidor.getSensorlabel() %> />
+              <%=unMedidor.getSensorlabel() %>
             </div></td>
           </tr>
           <tr>
@@ -191,11 +207,15 @@ if (unMedidor.getSensorlabel()==""){
             </div></td>
           </tr>
           <tr>
+            <td><label>
+              <div align="center">Ultima Lectura</div></label></td>
             <td><div align="center">
-              <input type="button" name="accept" id="accept" value="Programar" />
+              <%=unMedidor.getTimelectura() %>
             </div></td>
-            <td><div align="center">
-              <input type="button" name="volver" id="volver" value="volver" />
+          </tr>
+          <tr>
+            <td colspan="2"><div align="center">
+              <input type="button" name="accept" id="accept" value="Programar" />
             </div></td>
           </tr>
         </table>
@@ -203,7 +223,7 @@ if (unMedidor.getSensorlabel()==""){
 <%} 
 String volver="AmbientServlet?action=consultMedidor";
 %>
-	<a href="<%=volver%>" align="center">VOLVER &raquo;</a>
+	<a href="<%=volver%>" align="center">&raquo; VOLVER &laquo;</a>
     </div>
     <p>&nbsp;</p>
     <p>&nbsp;</p>

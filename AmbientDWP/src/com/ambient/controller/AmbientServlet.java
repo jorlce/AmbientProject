@@ -94,11 +94,11 @@ public class AmbientServlet extends HttpServlet {
 		}
 	
 		else if (action.equalsIgnoreCase("statistics")){
-			System.out.println("Pagina de Administración de Sensores");
+			System.out.println("Pagina de Estadísticas");
 			paginaForward = PAGINA_ESTADISTICAS;
 		}
 		else if (action.equalsIgnoreCase("geoloc")){
-			System.out.println("Pagina de Gestion de Cuentas");
+			System.out.println("Pagina de GeoLocalizacion");
 			paginaForward = PAGINA_GEOLOCALIZACION;
 		}
 		else if (action.equalsIgnoreCase("admin")){
@@ -118,6 +118,16 @@ public class AmbientServlet extends HttpServlet {
 			resEndPoint = callEndPoint2("GET", "", endPoint);
 			unMedidor = jdao.findSensorMeasure(resEndPoint);
 			//unMedidor.setSensorlabel((String) request.getParameter("param"));
+			if (unMedidor != null) {
+				System.out.println("Medidor:");
+				System.out.println(unMedidor.getSensorlabel());
+				System.out.println(unMedidor.getTemperature());
+				System.out.println(unMedidor.getHumedad());
+				System.out.println(unMedidor.getNivelCO());
+				System.out.println(unMedidor.getNivelCO2());
+				System.out.println(unMedidor.getNivelMetano());
+				System.out.println(unMedidor.getTimelectura());
+			}
 			request.setAttribute("unSensor", unMedidor);
 			paginaForward = PAGINA_CONSULTA_SENSOR;
 		}
