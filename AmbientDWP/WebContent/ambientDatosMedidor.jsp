@@ -163,7 +163,7 @@ if (unMedidor == null){
       <form id="formProg" name="formProg" method="post" action="AmbientServlet">
         <table width="418" border="1" cellpadding="1">
           <tr>
-            <td colspan="2"><div align="center">VALORES  MEDIDOR</div></td>
+            <td colspan="2"><div align="center">VALORES  SENSOR</div></td>
           </tr>
           <tr>
             <td width="172"><label>
@@ -213,11 +213,11 @@ if (unMedidor == null){
               <%=unMedidor.getTimelectura() %>
             </div></td>
           </tr>
-          <tr>
+         <!--  <tr>
             <td colspan="2"><div align="center">
               <input type="button" name="accept" id="accept" value="Programar" />
             </div></td>
-          </tr>
+          </tr> -->
         </table>
       </form>
 <%} 
@@ -231,9 +231,7 @@ String volver="AmbientServlet?action=consultMedidor";
     <div align="center"></div>
     <p>&nbsp;</p>
   <!-- InstanceEndEditable --><!-- end .content --></div>
-  <div class="footer">
-    <p>Footer</p>
-    <!-- end .footer --></div>
+
 <!-- end .container --></div>
 </body>
 <!-- InstanceEnd --></html>

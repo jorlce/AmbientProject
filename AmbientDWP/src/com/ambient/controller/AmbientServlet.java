@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
@@ -43,6 +45,7 @@ public class AmbientServlet extends HttpServlet {
 	String ENDPOINT_LISTA_SENSORES = "/listSensors";
 	String ENDPOINT_ALTA_SENSOR = "/addSensor";
 	String ENDPOINT_BAJA_SENSOR = "/deleteSensor";
+	String ENDPOINT_LOGIN = "/login/";
 	
 	//Base URL for MicroService
 	String BASE_URL = "http://localhost:8080/ambientService";
@@ -59,6 +62,7 @@ public class AmbientServlet extends HttpServlet {
 	String PAGINA_NUEVO_SENSOR = "/ambientNewMedidor.jsp";
 	String PAGINA_CONSULTA_SENSOR ="/ambientDatosMedidor.jsp";
 	String PAGINA_LISTA_SENSORES ="/ambientListaSensores.jsp";
+	String PAGINA_LOGIN ="/ambientLogin.jsp";
 	
 
     /**
@@ -189,6 +193,9 @@ public class AmbientServlet extends HttpServlet {
 		String forward= "";
 		//String action = request.getParameter("form");
 		String sensorId = "";
+		session = request.getSession(true);
+		String endPoint = "";
+		String resEndPoint = "";
 		
 		if(request.getParameterMap().containsKey("sensorFind")!=false)  			// Return a given Sensor
 		{
@@ -213,7 +220,31 @@ public class AmbientServlet extends HttpServlet {
 			forward = PAGINA_OPERACIONES;
 			
 			
-		} else {
+		} else if (request.getParameterMap().containsKey("user")!=false) {
+			String user, pass;
+			user = request.getParameter("user");
+			pass = request.getParameter("pass");
+			endPoint = BASE_URL + ENDPOINT_LOGIN +  user + "/" + pass;
+			resEndPoint = callEndPoint2("GET", "", endPoint);
+			if (!(resEndPoint.equals("ERROR"))) {
+				if (resEndPoint.equals("ACCEPTED")) {
+					session.setAttribute("userActivo", user);
+					paginaForward = PAGINA_ADMIN_INICIO;
+
+				} else {
+					session.invalidate();
+					request.setAttribute("errorMessage", "Usuario o Contraseñas no válidos");
+					paginaForward = PAGINA_LOGIN;
+				}
+
+			} else {
+				session.invalidate();
+				request.setAttribute("errorMessage", "Sin conexión al Servidor");
+				paginaForward = PAGINA_LOGIN;
+			}
+			
+		}
+		else {
 			forward = PAGINA_ADMIN_INICIO;
 		}
 		RequestDispatcher view = request.getRequestDispatcher(forward);
@@ -222,7 +253,7 @@ public class AmbientServlet extends HttpServlet {
 	}
 	private String callEndPoint2(String method, String param, String endPoint) {
 		String responseString = "";
-		String outputString = "";
+		String outputString = "ERROR";
 		
 		switch (method) {
 			case "GET":
@@ -255,7 +286,7 @@ public class AmbientServlet extends HttpServlet {
 			         e.printStackTrace();
 			     } catch (IOException e) {
 			         e.printStackTrace();
-			     }
+			     } 
 				break;
 			case "POST":
 				try {

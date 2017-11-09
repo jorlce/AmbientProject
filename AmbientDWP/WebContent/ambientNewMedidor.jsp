@@ -182,9 +182,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     <div align="center"></div>
     <p>&nbsp;</p>
   <!-- InstanceEndEditable --><!-- end .content --></div>
-  <div class="footer">
-    <p>Footer</p>
-    <!-- end .footer --></div>
+ 
 <!-- end .container --></div>
 </body>
 <!-- InstanceEnd --></html>

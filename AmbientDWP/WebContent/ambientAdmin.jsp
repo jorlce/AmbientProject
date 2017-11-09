@@ -117,22 +117,23 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
     <div align="center">
       <table width="200" border="1" cellpadding="1">
         <tr>
-          <td><div align="center"><a href="AmbientServlet?action=newMedidor">Crear Medidor</a></div></td>
+          <td><div align="center"><a href="AmbientServlet?action=newMedidor">
+          <font color="#0066FF">Crear Sensor</font></a></div></td>
         </tr>
         <tr>
-          <td><div align="center"><a href="AmbientServlet?action=consultMedidor">Consultar Medidor</a></div></td>
+          <td><div align="center"><a href="AmbientServlet?action=consultMedidor">
+          <font color="#0066FF">Consultar Sensor</font></a></div></td>
         </tr>
         <tr>
-          <td><div align="center"><a href="AmbientServlet?action=deleteMedidor">Eliminar Medidor</a></div></td>
+          <td><div align="center"><a href="AmbientServlet?action=deleteMedidor">
+          <font color="#0066FF">Eliminar Sensor</font></a></div></td>
         </tr>
       </table>
     </div>
     <p>&nbsp;</p>
     <h1>&nbsp;</h1>
   <!-- InstanceEndEditable --><!-- end .content --></div>
-  <div class="footer">
-    <p>Footer</p>
-    <!-- end .footer --></div>
+  
 <!-- end .container --></div>
 </body>
 <!-- InstanceEnd --></html>

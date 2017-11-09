@@ -176,9 +176,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
       </tr>
     </table>
   <!-- InstanceEndEditable --><!-- end .content --></div>
-  <div class="footer">
-    <p>Footer</p>
-    <!-- end .footer --></div>
+ 
 <!-- end .container --></div>
 </body>
 <!-- InstanceEnd --></html>
