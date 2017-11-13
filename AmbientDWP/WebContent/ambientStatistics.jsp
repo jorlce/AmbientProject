@@ -1,155 +1,84 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
+<%@ page import="com.ambient.model.*" %>
+<%@ page import="java.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/AmbientTmp.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Untitled Document</title>
+<title>AmbientWeb</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css" type="text/css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" type="text/css" />
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	google.charts.load('current', {'packages': ['table','corechart']});
+	google.charts.load('current', {'packages': ['corechart']});
 	google.charts.setOnLoadCallback(drawSort);
+	
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Lectura');
+	data.addColumn('number', 'CO');
+	data.addColumn('number', 'CO2');
+	data.addColumn('number', 'Metano');
+	
+	function addValues(String lectura, float nivelCO, float nivelCO2, float metano) {
+		
+	}
+	
 	function drawSort() {
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', 'Name');
-		data.addColumn('number', 'Salary');
-		data.addColumn('boolean', 'Full Time');
-		
-		data.addRows(5);
-		data.setCell(0, 0, 'John');
-		data.setCell(0, 1, 10000);
-		data.setCell(0, 2, true);
-		data.setCell(1, 0, 'Mary');
-		data.setCell(1, 1, 25000);
-		data.setCell(1, 2, true);
-		data.setCell(2, 0, 'Steve');
-		data.setCell(2, 1, 8000);
-		data.setCell(2, 2, false);
-		data.setCell(3, 0, 'Ellen');
-		data.setCell(3, 1, 20000);
-		data.setCell(3, 2, true);
-		data.setCell(4, 0, 'Mike');
-		data.setCell(4, 1, 12000);
-		data.setCell(4, 2, false);
+		 var data = google.visualization.arrayToDataTable([
+		                                                   ['Lecturas', 'CO', 'CO2', 'Metano'],
+		                                                   ['1',  1000,      400, 1000],
+		                                                   ['2',  1170,      460, 1100],
+		                                                   ['3',  660,       1120, 900],
+		                                                   ['4',  1030,      540, 2000]
+		                                                 ]);
 		
 		
-		var formatter = new google.visualization.NumberFormat({prefix: '$'});
-		formatter.format(data, 1); // Apply formatter to second column
-		
-		var view = new google.visualization.DataView(data);
-		view.setColumns([0, 1]);
-		
-		var table = new google.visualization.Table(document.getElementById('table_sort_div'));
-		table.draw(view,{width: '100%', height: '100%'});
-		
-		var chart = new google.visualization.BarChart(document.getElementById('chart_sort_div'));
-		chart.draw(view);
-		
-		google.visualization.events.addListener(table, 'sort',
-		    function(event) {
-		      data.sort([{column: event.column, desc: !event.ascending}]);
-		      chart.draw(view);
-		    });
+		 var options = {
+		          title: 'Lecturas de Hoy',
+		          curveType: 'function',
+		          legend: { position: 'bottom' }
+		        };
+		 
+		 var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+	        chart.draw(data, options);
 	}
 
 </script>
-<style type="text/css">
-<!--
-body {
-	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
-	background-color: #66CC99;
-	margin: 0;
-	padding: 0;
-}
-
-/* ~~ Element/tag selectors ~~ */
-ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
-	padding: 0;
-	margin: 0;
-}
-h1, h2, h3, h4, h5, h6, p {
-	margin-top: 0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
-	padding-right: 15px;
-	padding-left: 15px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
-}
-a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
-	border: none;
-}
-/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
-a:link {
-	color: #42413C;
-	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
-}
-a:visited {
-	color: #6E6C64;
-	text-decoration: underline;
-	background-color: #0C9;
-}
-a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
-	text-decoration: none;
-}
-
-/* ~~ this fixed width container surrounds the other divs ~~ */
-.container {
-	width: 960px;
-	background-color: #FFF;
-	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
-}
-
-/* ~~ the header is not given a width. It will extend the full width of your layout. It contains an image placeholder that should be replaced with your own linked logo ~~ */
-.header {
-	background-color: #ADB96E;
-}
-
-/* ~~ This is the layout information. ~~ 
-
-1) Padding is only placed on the top and/or bottom of the div. The elements within this div have padding on their sides. This saves you from any "box model math". Keep in mind, if you add any side padding or border to the div itself, it will be added to the width you define to create the *total* width. You may also choose to remove the padding on the element in the div and place a second div within it with no width and the padding necessary for your design.
-
-*/
-
-.content {
-
-	padding: 10px 0;
-}
-
-/* ~~ The footer ~~ */
-.footer {
-	padding: 10px 0;
-	background-color: #CCC49F;
-}
-
-/* ~~ miscellaneous float/clear classes ~~ */
-.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
-	float: right;
-	margin-left: 8px;
-}
-.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
-	float: left;
-	margin-right: 8px;
-}
-.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the #footer is removed or taken out of the #container */
-	clear:both;
-	height:0;
-	font-size: 1px;
-	line-height: 0px;
-}
-.container .header a #Insert_logo {
-	color: #00D96C;
-}
-.container .header a #Insert_logo {
-	color: #00D96C;
-}
--->
-</style></head>
+</head>
 
 <body bgcolor="#66CC99">
-
+<%
+String sensorActual = (String) request.getAttribute("sensorActual");
+Medidor unMedidor = null;
+unMedidor = (Medidor) request.getAttribute("unSensor");
+String enlaceday, enlacemonth, enlaceyear;
+enlaceday = "\"AmbientServlet?action=viewMedidor&period=day&param=" + unMedidor.getSensorlabel() +"\"";
+enlacemonth = "\"AmbientServlet?action=viewMedidor&period=month&param=" + unMedidor.getSensorlabel() +"\"";
+enlaceyear = "\"AmbientServlet?action=viewMedidor&period=year&param=" + unMedidor.getSensorlabel() +"\"";
+%>
 <div class="container">
   <div class="header"><a href="#"></a>
+  <ul>
+	  <li><a href="AmbientServlet?action=inicio">INICIO</a></li>
+	  <li><a href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
+	  <li class="dropdown">
+	   <a class="active" href="javascript:void(0)" class="dropbtn">ESTADISTICA</a>
+	    <div class="dropdown-content">
+	      <a href=<%=enlaceday%>>DIA EN CURSO</a>
+	      <a href=<%=enlacemonth%>>MES EN CURSO</a>
+	      <a href=<%=enlaceyear%>>AÑO EN CURSO</a>
+	    </div>
+	  </li>
+	  <li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
+	  <li style="float:right"><a href="#about">LOGOUT</a></li>
+	</ul>
+	<!-- 
     <table width="961" border="1">
       <tr bgcolor="#66CC99">
         <th width="107"><div align="center"><a href="AmbientServlet?action=inicio">INICIO</a></div></th>
@@ -159,19 +88,28 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
         <th width="113"><div align="center"><a href="AmbientServlet?action=contact">CONTACTO</a></div></th>
       </tr>
     </table> 
-    
+-->    
     <!-- end .header --></div>
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
     <h1>&nbsp;</h1>
     <table align="center">
+<%
+	List<Medidor> listaSensores = null;
+    listaLecturas = (List<Medidor>) request.getAttribute("listCharts");
+            if (listaLecturas != null) {
+	        	Iterator it = listaLecturas.iterator();
+	        	Medidor unMedidor = null;
+				String nuevoId = "";
+	 			int contSensors = 0;
+	 			System.out.println("Antes de recorrer la lista");
+		    	while (it.hasNext()){
+		    		
+		    	}
+            }
+%>
       <tr valign="top">
         <td>
-          <div id="table_sort_div" style="align: center; width: 700px; height: 300px;"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div id="chart_sort_div" style="align: center; width: 700px; height: 300px;"></div>
+          <div id="curve_chart" style="align: center; width: 700px; height: 300px;"></div>
         </td>
       </tr>
     </table>

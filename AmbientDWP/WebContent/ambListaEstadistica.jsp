@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>AmbientWeb</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css" type="text/css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" type="text/css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
@@ -18,15 +18,9 @@
 
 <div class="container">
   <div class="header"><a href="#"></a>
-  	<ul>
-  	 	<li><a  href="AmbientServlet?action=inicio">INICIO</a></li>
-	  	<li><a class="active" href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
-	  	<li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
-	  	<li style="float:right"><a href="#about">LOGOUT</a></li>
-	 </ul>
+  	<jsp:include page="/ambientMenu.jsp"/>    
     <!-- end .header --></div>
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
-  <h2 align="center" class="header"><strong>Administración</strong></h2>
    <div align="center">
       <form id="form1" name="form1" method="post" action="">
         <table width="418" border="1" cellpadding="1">

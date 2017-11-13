@@ -1,9 +1,5 @@
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-</head>
-<body>
  <table width="961" border="1">
       <tr bgcolor="#66CC99">
         <th width="107"><div align="center"><a href="AmbientServlet?action=inicio">INICIO</a></div></th>
@@ -12,5 +8,4 @@
         <th width="260"><div align="center"><a href="AmbientServlet?action=admin">ADMINISTRACION</a></div></th>
         <th width="113"><div align="center"><a href="AmbientServlet?action=contact">CONTACTO</a></div></th>
       </tr>
-    </table> 
-</body>
+ </table> 

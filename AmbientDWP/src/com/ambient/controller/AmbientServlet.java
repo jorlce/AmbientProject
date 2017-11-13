@@ -22,6 +22,8 @@ import javax.servlet.http.*;
 import com.ambient.dao.*;
 import com.ambient.model.*;
 import com.ambient.json.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -46,6 +48,7 @@ public class AmbientServlet extends HttpServlet {
 	String ENDPOINT_ALTA_SENSOR = "/addSensor";
 	String ENDPOINT_BAJA_SENSOR = "/deleteSensor";
 	String ENDPOINT_LOGIN = "/login/";
+	String ENDPOINT_ESTADISTICA = "/chart/";
 	
 	//Base URL for MicroService
 	String BASE_URL = "http://localhost:8080/ambientService";
@@ -96,11 +99,6 @@ public class AmbientServlet extends HttpServlet {
 			System.out.println("Primera vez");
 			paginaForward = PAGINA_ADMIN_INICIO;
 		}
-	
-		else if (action.equalsIgnoreCase("statistics")){
-			System.out.println("Pagina de Estadísticas");
-			paginaForward = PAGINA_ESTADISTICAS;
-		}
 		else if (action.equalsIgnoreCase("geoloc")){
 			System.out.println("Pagina de GeoLocalizacion");
 			paginaForward = PAGINA_GEOLOCALIZACION;
@@ -134,7 +132,23 @@ public class AmbientServlet extends HttpServlet {
 			}
 			request.setAttribute("unSensor", unMedidor);
 			paginaForward = PAGINA_CONSULTA_SENSOR;
+		} else if (action.equalsIgnoreCase("statistics")){
+			System.out.println("Pagina de Ver Datos Sensor");
+			//List<Medidor> listMedidor = null;
+			String sensorActual = (String) request.getParameter("param");
+			endPoint = BASE_URL + ENDPOINT_ESTADISTICA +  (String) request.getParameter("param") 
+					+ "/" + (String) request.getParameter("period");
+			resEndPoint = callEndPoint2("GET", "", endPoint);
+			//listMedidor = jdao.entreFechasMeasure(resEndPoint);
+			//String arrayJson = jdao.jsonForChart(listMedidor);
+			JsonNode rootArray = jdao.entreFechasMeasure(resEndPoint);
+			//String arrayJson = jdao.entreFechasMeasure(resEndPoint);
+			request.setAttribute("listCharts", rootArray);
+			request.setAttribute("sensorActual", sensorActual);
+			//System.out.println(listMedidor);
+			paginaForward = PAGINA_CONSULTA_SENSOR;
 		}
+
 		else if (action.equalsIgnoreCase("consultMedidor")){
 			System.out.println("Pagina de Lista Sensores");
 			endPoint = BASE_URL + ENDPOINT_LISTA_SENSORES;
@@ -253,7 +267,7 @@ public class AmbientServlet extends HttpServlet {
 	}
 	private String callEndPoint2(String method, String param, String endPoint) {
 		String responseString = "";
-		String outputString = "ERROR";
+		String outputString = "";
 		
 		switch (method) {
 			case "GET":
@@ -326,7 +340,9 @@ public class AmbientServlet extends HttpServlet {
 			     }
 				break;
 		}
-		return outputString;
+		if (outputString.length()>0) {
+			return outputString;
+		} else return "ERROR";
 	}
 	
 	private void callEndPoint(HttpServletRequest request, String call) {
