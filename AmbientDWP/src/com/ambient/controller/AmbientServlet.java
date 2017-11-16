@@ -134,19 +134,20 @@ public class AmbientServlet extends HttpServlet {
 			paginaForward = PAGINA_CONSULTA_SENSOR;
 		} else if (action.equalsIgnoreCase("statistics")){
 			System.out.println("Pagina de Ver Datos Sensor");
-			//List<Medidor> listMedidor = null;
+			List<Medidor> listMedidor = null;
 			String sensorActual = (String) request.getParameter("param");
 			endPoint = BASE_URL + ENDPOINT_ESTADISTICA +  (String) request.getParameter("param") 
 					+ "/" + (String) request.getParameter("period");
 			resEndPoint = callEndPoint2("GET", "", endPoint);
-			//listMedidor = jdao.entreFechasMeasure(resEndPoint);
+			listMedidor = jdao.listaLecturas(resEndPoint);
 			//String arrayJson = jdao.jsonForChart(listMedidor);
-			JsonNode rootArray = jdao.entreFechasMeasure(resEndPoint);
+			//JsonNode rootArray = jdao.entreFechasMeasure(resEndPoint);
 			//String arrayJson = jdao.entreFechasMeasure(resEndPoint);
-			request.setAttribute("listCharts", rootArray);
+			//request.setAttribute("listCharts", rootArray);
+			request.setAttribute("listCharts", listMedidor);
 			request.setAttribute("sensorActual", sensorActual);
 			//System.out.println(listMedidor);
-			paginaForward = PAGINA_CONSULTA_SENSOR;
+			paginaForward = PAGINA_ESTADISTICAS;
 		}
 
 		else if (action.equalsIgnoreCase("consultMedidor")){
@@ -180,9 +181,13 @@ public class AmbientServlet extends HttpServlet {
 			//request.setAttribute("unSensor", unMedidor);
 			paginaForward = PAGINA_LISTA_SENSORES;
 		}
-		else if (action.equalsIgnoreCase("contacto")){
-			System.out.println("Pagina de Administración de Sensores");
+		else if (action.equalsIgnoreCase("contact")){
+			System.out.println("Pagina de Contacto");
+			
 			paginaForward = PAGINA_CONTACTO;
+		} else if (action.equalsIgnoreCase("logout")) {
+			session.invalidate();
+			paginaForward = PAGINA_LOGIN;
 		}
 		/*
 		if ((request.getParameter("usuario")!=null) && 
@@ -236,13 +241,16 @@ public class AmbientServlet extends HttpServlet {
 			
 		} else if (request.getParameterMap().containsKey("user")!=false) {
 			String user, pass;
+			LoginCredential userLogged;
 			user = request.getParameter("user");
 			pass = request.getParameter("pass");
 			endPoint = BASE_URL + ENDPOINT_LOGIN +  user + "/" + pass;
 			resEndPoint = callEndPoint2("GET", "", endPoint);
 			if (!(resEndPoint.equals("ERROR"))) {
 				if (resEndPoint.equals("ACCEPTED")) {
-					session.setAttribute("userActivo", user);
+					userLogged = new LoginCredential();
+					userLogged.setLogin(user);
+					session.setAttribute("userActivo", userLogged);
 					paginaForward = PAGINA_ADMIN_INICIO;
 
 				} else {
@@ -257,7 +265,7 @@ public class AmbientServlet extends HttpServlet {
 				paginaForward = PAGINA_LOGIN;
 			}
 			
-		}
+		} 
 		else {
 			forward = PAGINA_ADMIN_INICIO;
 		}

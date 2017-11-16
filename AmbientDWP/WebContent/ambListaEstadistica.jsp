@@ -12,6 +12,9 @@
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<%
+LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo");
+%>
 </head>
 
 <body>

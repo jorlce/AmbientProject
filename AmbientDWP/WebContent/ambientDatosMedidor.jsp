@@ -16,6 +16,7 @@
 <body>
 <% Medidor unMedidor = null;
 unMedidor = (Medidor) request.getAttribute("unSensor");
+LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo");
 String enlaceday, enlacemonth, enlaceyear;
 System.out.println(unMedidor.getSensorlabel());
 enlaceday = "\"AmbientServlet?action=statistics&period=day&param=" + unMedidor.getSensorlabel() +"\"";
@@ -40,7 +41,7 @@ System.out.println(enlaceyear);
 	    </div>
 	  </li>
 	  <li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
-	  <li style="float:right"><a href="#about">LOGOUT</a></li>
+	  <li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	</ul>
    <!--  <table width="961" border="1">
       <tr bgcolor="#66CC99">

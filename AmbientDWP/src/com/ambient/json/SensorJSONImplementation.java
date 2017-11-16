@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.ambient.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -101,13 +105,66 @@ public class SensorJSONImplementation implements SensorJSON {
 		return listaSensores;
 	}
 	
+	private String TimeLecturatoString(long lectura) {
+	//Returns the Timestamp in format ('dd MM YY hh:mm')
+			LocalDateTime localDateTime = new LocalDateTime(lectura);
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
+		    String sqlTimeString = fmt.print(localDateTime);
+		    System.out.println(sqlTimeString);
+			//Date trueDate = localDateTime.toDate(DateTimeZone.UTC.toTimeZone());
+			return sqlTimeString;
+		}
+	
+	public List<Medidor> listaLecturas(String arraySensorJson) {
+		ObjectMapper mapper = new ObjectMapper();
+		List<Medidor> listaSensores = new ArrayList<Medidor>();
+		//SensorData unSensor = new SensorData();
+		Medidor unMedidor = new Medidor();
+		
+		try {
+			JsonNode rootList = mapper.readTree(arraySensorJson);
+			
+			for(JsonNode root : rootList) {
+		
+				// Get measure values
+				unMedidor.setTimelectura(root.path("timelectura").longValue());
+				unMedidor.setTemperatura(root.path("temperatura").floatValue()); 
+				unMedidor.setHumedad(root.path("humedad").floatValue()); 
+				unMedidor.setNivelCO(root.path("nivelCO").floatValue()); 
+				unMedidor.setNivelCO2(root.path("nivelCO2").floatValue()); 
+				unMedidor.setNivelMetano(root.path("metano").floatValue()); 
+		
+		
+				//System.out.println("id : ");
+	
+				// Get Sensor values
+				JsonNode sensorNode = root.path("sensorID");
+				if (sensorNode.isMissingNode()) {
+					unMedidor.setSensorlabel("ERROR");
+				} else {
+					
+					unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
+					/*unSensor.setId(unMedidor.getSensorlabel());
+					unSensor.setLatitud(sensorNode.path("latitud").floatValue());
+					unSensor.setLongitud(sensorNode.path("longitud").floatValue());*/
+				}
+			
+				listaSensores.add(unMedidor);
+			}
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return listaSensores;
+	}
+	
 	public JsonNode entreFechasMeasure(String arraySensorJson) {
-		System.out.println("Dentro de entreFechas");
-		System.out.println(arraySensorJson);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectMapper mapperChart = new ObjectMapper();
-		List<Medidor> listaSensores = new ArrayList<Medidor>();
-		SensorData unSensor = new SensorData();
 		JsonNode rootChart = mapperChart.createObjectNode();
 		String jsonChart = "";
 		
@@ -119,7 +176,7 @@ public class SensorJSONImplementation implements SensorJSON {
 			
 			((ObjectNode) rootCols).put("id", "Lecturas");
 			((ObjectNode) rootCols).put("label", "Lecturas");
-			((ObjectNode) rootCols).put("type", "date");			
+			((ObjectNode) rootCols).put("type", "string");			
 			((ArrayNode)arrayCols).add(rootCols);
 			
 			JsonNode rootCols1 = mapperChart.createObjectNode();
@@ -154,47 +211,24 @@ public class SensorJSONImplementation implements SensorJSON {
 				JsonNode rootCells2 = mapperChart.createObjectNode();
 				JsonNode rootCells3 = mapperChart.createObjectNode();
 				
-				((ObjectNode) rootCells).put("v", root.path("timelectura").longValue());
-				((ObjectNode) rootCells).put("f", "2/28/08 12:31 AM");
+				String lectura = TimeLecturatoString(root.path("timelectura").longValue());
+				
+				((ObjectNode) rootCells).put("v", lectura);
+				//((ObjectNode) rootCells).put("f", "2/28/08 12:31 AM");
 				((ArrayNode) arrayRows).add(rootCells);
 				((ObjectNode) rootCells1).put("v", root.path("nivelCO").floatValue());
-				((ObjectNode) rootCells).put("f", "7.00");
+				((ObjectNode) rootCells1).put("f", "7.00");
 				((ArrayNode) arrayRows).add(rootCells1);
 				((ObjectNode) rootCells2).put("v", root.path("nivelCO2").floatValue());
-				((ObjectNode) rootCells).put("f", "7.00");
+				((ObjectNode) rootCells2).put("f", "7.00");
 				((ArrayNode) arrayRows).add(rootCells2);
 				((ObjectNode) rootCells3).put("v", root.path("metano").floatValue());
-				((ObjectNode) rootCells).put("f", "7.00");
+				((ObjectNode) rootCells3).put("f", "7.00");
 				((ArrayNode) arrayRows).add(rootCells3);
 				
 				((ObjectNode) rootRows).set("c",arrayRows);
 				((ArrayNode) rootArrayRows).add(rootRows);
-				/*Medidor unMedidor = new Medidor();
-				// Get measure values
-				unMedidor.setTimelectura(root.path("timelectura").longValue());
-				unMedidor.setTemperatura(root.path("temperatura").floatValue()); 
-				unMedidor.setHumedad(root.path("humedad").floatValue()); 
-				unMedidor.setNivelCO(root.path("nivelCO").floatValue()); 
-				unMedidor.setNivelCO2(root.path("nivelCO2").floatValue()); 
-				unMedidor.setNivelMetano(root.path("metano").floatValue()); */
-				
-				
-				//System.out.println("id : ");
-
-				/*// Get Sensor values
-				JsonNode sensorNode = root.path("sensorID");
-				if (sensorNode.isMissingNode()) {
-					unMedidor.setSensorlabel("ERROR");
-				} else {
-					
-					unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
-					unSensor.setId(unMedidor.getSensorlabel());
-					unSensor.setLatitud(sensorNode.path("latitud").floatValue());
-					unSensor.setLongitud(sensorNode.path("longitud").floatValue());
-				}*/
-				
-				//listaSensores.add(unMedidor);
-			}
+							}
 			((ObjectNode) rootChart).set("rows",rootArrayRows);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -206,8 +240,9 @@ public class SensorJSONImplementation implements SensorJSON {
 		/*System.out.println("Recibidas lecturas");
 		System.out.println(listaSensores.size());
 		return listaSensores;*/
-		jsonChart = ((ObjectNode) rootChart).asText();
+		jsonChart = rootChart.toString();
 		System.out.println(jsonChart);
+		//return jsonChart;
 		return rootChart;
 	}
 	

@@ -12,6 +12,8 @@ public interface SensorJSON {
 	public Medidor findSensorMeasure(String measureJson);
 	public List<SensorData> listaSensores(String arraySensorJson);
 	//public List<Medidor> entreFechasMeasure(String arraySensorJson);
+	//public String entreFechasMeasure(String arraySensorJson);
 	public JsonNode entreFechasMeasure(String arraySensorJson);
+	public List<Medidor> listaLecturas(String arraySensorJson);
 	public String jsonForChart(List<Medidor> listMedidor);
 }
