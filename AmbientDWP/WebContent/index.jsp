@@ -7,6 +7,6 @@
 <title>Servlet de Prueba</title>
 </head>
 <body>
- <jsp:forward page="/adminInicio.jsp"></jsp:forward> 
+ <jsp:forward page="/adminLogin.jsp"></jsp:forward> 
 </body>
 </html>

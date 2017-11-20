@@ -11,13 +11,20 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" type="text/css"/>
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
-<%
-LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo");
-%>
+
 </head>
 
 <body>
-
+<%
+LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo");
+if (userActual == null) {
+	System.out.println("Usuario no Encontrado");
+%>
+<jsp:include page = "errorLogin.jsp"/>
+<%
+} else {
+	System.out.println("Usuario Encontrado");
+%>
 <div class="container">
   <div class="header"><a href="#"></a>
   	 <ul>
@@ -44,5 +51,6 @@ LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo"
     <p>Footer</p>
     <!-- end .footer --></div>
 <!-- end .container --></div>
+<%}%>
 </body>
 <!-- InstanceEnd --></html>

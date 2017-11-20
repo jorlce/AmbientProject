@@ -84,7 +84,7 @@ if (unMedidor == null){
 	System.out.println(unMedidor.getNivelMetano());
 %>
       <form id="formProg" name="formProg" method="post" action="AmbientServlet">
-        <table width="418" border="1" cellpadding="1">
+        <table width="418" border="1" cellpadding="1" bgcolor="#f1f8e9">
           <tr>
             <td colspan="2"><div align="center">VALORES  SENSOR</div></td>
           </tr>
@@ -112,6 +112,17 @@ if (unMedidor == null){
           <tr>
             <td><label><div align="center">Nivel CO</div></label></td>
             <td><div align="center">
+               <%
+               	if ((unMedidor.getNivelCO() > 11) && (unMedidor.getNivelCO() < 30)) { %>
+               		<span class="textoWarn">
+               <%   
+               } else if (unMedidor.getNivelCO() >= 30) { %>
+            	   <span class="textoAlarm">
+               <%   
+               } else {%>
+            	   <span class="textoOK">
+                   
+               <%} %>
               <%=unMedidor.getNivelCO() %>
             </div></td>
           </tr>
@@ -119,6 +130,17 @@ if (unMedidor == null){
             <td><label>
               <div align="center">Nivel CO2</div></label></td>
             <td><div align="center">
+            	<%
+               	if ((unMedidor.getNivelCO2() > 1500) && (unMedidor.getNivelCO2() < 30000)) { %>
+               		<span class="textoWarn">
+               <%   
+               } else if (unMedidor.getNivelCO2() >= 30000) { %>
+            	   <span class="textoAlarm">
+               <%   
+               } else {%>
+            	   <span class="textoOK">
+                   
+               <%} %>
               <%=unMedidor.getNivelCO2() %>
             </div></td>
           </tr>
@@ -126,6 +148,17 @@ if (unMedidor == null){
             <td><label>
               <div align="center">Nivel Metano</div></label></td>
             <td><div align="center">
+           		 <%
+               	if ((unMedidor.getNivelMetano() > 5000) && (unMedidor.getNivelMetano() < 10000)) { %>
+               		<span class="textoWarn">
+               <%   
+               } else if (unMedidor.getNivelMetano() >= 10000) { %>
+            	   <span class="textoAlarm">
+               <%   
+               } else {%>
+            	   <span class="textoOK">
+                   
+               <%} %>
               <%=unMedidor.getNivelMetano() %>
             </div></td>
           </tr>

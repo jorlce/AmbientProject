@@ -51,8 +51,10 @@ function enviar(datos){
 	<table width="98%">
 		<tr>
     	<td class="textogranate">
-    	<%  if (null!=request.getAttribute("errorMessage"))   {
-        	out.println(request.getAttribute("errorMessage"));
+    	<% if (session != null) {  
+    		if (null!=request.getAttribute("errorMessage"))   {
+        		out.println(request.getAttribute("errorMessage"));
+    		}
     	}
     	%>
     	</td></tr>

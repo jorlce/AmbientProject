@@ -46,7 +46,7 @@ public class AmbientServlet extends HttpServlet {
 	String ENDPOINT_CONSULTA_SENSOR = "/consultSensor/";
 	String ENDPOINT_LISTA_SENSORES = "/listSensors";
 	String ENDPOINT_ALTA_SENSOR = "/addSensor";
-	String ENDPOINT_BAJA_SENSOR = "/deleteSensor";
+	String ENDPOINT_BAJA_SENSOR = "/deleteSensor/";
 	String ENDPOINT_LOGIN = "/login/";
 	String ENDPOINT_ESTADISTICA = "/chart/";
 	
@@ -63,6 +63,7 @@ public class AmbientServlet extends HttpServlet {
 	String PAGINA_CONTACTO = "ambientContacto.jsp";
 	String PAGINA_OPERACIONES = "/ambientAdmin.jsp";
 	String PAGINA_NUEVO_SENSOR = "/ambientNewMedidor.jsp";
+	String PAGINA_BAJA_SENSOR = "/ambientDelMedidor.jsp";
 	String PAGINA_CONSULTA_SENSOR ="/ambientDatosMedidor.jsp";
 	String PAGINA_LISTA_SENSORES ="/ambientListaSensores.jsp";
 	String PAGINA_LOGIN ="/ambientLogin.jsp";
@@ -113,7 +114,7 @@ public class AmbientServlet extends HttpServlet {
 			System.out.println("Pagina Crear un Sensor");
 			paginaForward = PAGINA_NUEVO_SENSOR;
 		}
-		else if (action.equalsIgnoreCase("viewMedidor")){
+		else if (action.equalsIgnoreCase("viewMedidor")){ 
 			System.out.println("Pagina de Ver Datos Sensor");
 			Medidor unMedidor = null;
 			endPoint = BASE_URL + ENDPOINT_CONSULTA_SENSOR +  (String) request.getParameter("param");
@@ -132,6 +133,7 @@ public class AmbientServlet extends HttpServlet {
 			}
 			request.setAttribute("unSensor", unMedidor);
 			paginaForward = PAGINA_CONSULTA_SENSOR;
+			
 		} else if (action.equalsIgnoreCase("statistics")){
 			System.out.println("Pagina de Ver Datos Sensor");
 			List<Medidor> listMedidor = null;
@@ -149,8 +151,44 @@ public class AmbientServlet extends HttpServlet {
 			//System.out.println(listMedidor);
 			paginaForward = PAGINA_ESTADISTICAS;
 		}
-
-		else if (action.equalsIgnoreCase("consultMedidor")){
+		else if (action.equalsIgnoreCase("removeMedidor")){ //Show list of Sensors before deleting
+			System.out.println("Pagina de Lista Sensores");
+			endPoint = BASE_URL + ENDPOINT_LISTA_SENSORES;
+			resEndPoint = callEndPoint2("GET", "", endPoint);
+			List<SensorData> listSensors = null;
+			if (resEndPoint.length() > 0) {
+				System.out.println("Mapping the result");
+				
+				listSensors = jdao.listaSensores(resEndPoint);
+				request.setAttribute("listSensors", listSensors);
+				Iterator it = listSensors.iterator();
+	        	SensorData nuevoSensor = null;
+			
+	 			
+		    	while (it.hasNext()){
+		 	  		nuevoSensor =(SensorData)it.next();
+		 	  		System.out.println("Sensor: ");
+		 	  		System.out.println(nuevoSensor.getSensorlabel());
+		 	  		System.out.println("Latitud: ");
+		 	  		System.out.println(nuevoSensor.getLatitud());
+		 	  		System.out.println("Longtud: ");
+		 	  		System.out.println(nuevoSensor.getLongitud());
+		    	}
+					
+			}
+			//Medidor unMedidor = new Medidor();
+			//callEndPoint(request,"consultMedidor");
+			
+			//request.setAttribute("unSensor", unMedidor);
+			paginaForward = PAGINA_BAJA_SENSOR;
+		}
+		else if (action.equalsIgnoreCase("delMedidor")) { // Delete a given Sensor
+			
+			endPoint = BASE_URL + ENDPOINT_BAJA_SENSOR +  (String) request.getParameter("param");
+			resEndPoint = callEndPoint2("DELETE","", endPoint);
+			paginaForward = PAGINA_OPERACIONES;
+		}
+		else if (action.equalsIgnoreCase("consultMedidor")){ //Show list of Sensors for consulting one
 			System.out.println("Pagina de Lista Sensores");
 			endPoint = BASE_URL + ENDPOINT_LISTA_SENSORES;
 			resEndPoint = callEndPoint2("GET", "", endPoint);
@@ -209,14 +247,14 @@ public class AmbientServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String forward= "";
+		//String forward= "";
 		//String action = request.getParameter("form");
 		String sensorId = "";
 		session = request.getSession(true);
 		String endPoint = "";
 		String resEndPoint = "";
 		
-		if(request.getParameterMap().containsKey("sensorFind")!=false)  			// Return a given Sensor
+		if(request.getParameterMap().containsKey("sensorFind")!=false)  			// Returns a given Sensor
 		{
 			Medidor unMedidor = new Medidor();
 			sensorId = request.getParameter("sensorFind");
@@ -224,8 +262,9 @@ public class AmbientServlet extends HttpServlet {
 			//dao.getSensorById(sensorId, unMedidor);
 			callEndPointPost("sensorFind",sensorId, request);
 			//request.setAttribute("unSensor", unMedidor);
-			forward = PAGINA_CONSULTAS;
-		} else if (request.getParameterMap().containsKey("newId")!=false)  {  // Create a new Sensor
+			paginaForward = PAGINA_CONSULTAS;
+			
+		}	else if (request.getParameterMap().containsKey("newId")!=false)  {  // Create a new Sensor
 			float longitud, latitud;
 		
 			SensorData unSensorData = new SensorData();
@@ -236,10 +275,10 @@ public class AmbientServlet extends HttpServlet {
 			unSensorData.setLongitud(longitud);
 			//dao.addSensor(unSensorData);
 			callEndPointPost("newMedidor",jdao.addSensorData(unSensorData), request);
-			forward = PAGINA_OPERACIONES;
+			paginaForward = PAGINA_OPERACIONES;
 			
 			
-		} else if (request.getParameterMap().containsKey("user")!=false) {
+		} else if (request.getParameterMap().containsKey("user")!=false) { //Check Login data
 			String user, pass;
 			LoginCredential userLogged;
 			user = request.getParameter("user");
@@ -267,9 +306,9 @@ public class AmbientServlet extends HttpServlet {
 			
 		} 
 		else {
-			forward = PAGINA_ADMIN_INICIO;
+			paginaForward = PAGINA_LOGIN;
 		}
-		RequestDispatcher view = request.getRequestDispatcher(forward);
+		RequestDispatcher view = request.getRequestDispatcher(paginaForward);
 		view.forward(request, response);
 
 	}
@@ -346,6 +385,37 @@ public class AmbientServlet extends HttpServlet {
 			     } catch (IOException e) {
 			         e.printStackTrace();
 			     }
+				break;
+			case "DELETE":	
+				try {
+					System.out.println(endPoint);
+					URL url = new URL(endPoint);
+					URLConnection connection = url.openConnection();
+					HttpURLConnection httpConn = (HttpURLConnection)connection;
+					//httpConn.setRequestMethod("GET");
+					httpConn.setRequestMethod(method);
+					httpConn.setRequestProperty("Content-length", "0");
+					httpConn.connect();
+					
+					//Read the response.
+					InputStreamReader isr = new InputStreamReader(httpConn.getInputStream());
+					BufferedReader in = new BufferedReader(isr);
+					
+					//Write the SOAP message response to a String.
+					while ((responseString = in.readLine()) != null) {
+					outputString = outputString + responseString;
+					}
+					httpConn.disconnect();
+					
+					System.out.println("Respuesta del microservicio");
+					System.out.println(outputString);
+				} catch (MalformedURLException e) {
+			         e.printStackTrace();
+			     } catch (ProtocolException e) {
+			         e.printStackTrace();
+			     } catch (IOException e) {
+			         e.printStackTrace();
+			     } 
 				break;
 		}
 		if (outputString.length()>0) {
@@ -538,7 +608,7 @@ public class AmbientServlet extends HttpServlet {
 				httpConn.setRequestProperty("Content-Length", String.valueOf(paramJson.length()));
 				httpConn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 				
-				httpConn.setRequestMethod("POST");
+				httpConn.setRequestMethod("PUT");
 				
 				httpConn.setDoOutput(true);
 				httpConn.setDoInput(true);
@@ -607,7 +677,7 @@ public class AmbientServlet extends HttpServlet {
 		         e.printStackTrace();
 		     }
 			break;
-		}
+		} 
 	}
 	
 }
