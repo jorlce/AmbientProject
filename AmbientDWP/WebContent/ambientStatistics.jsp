@@ -21,7 +21,7 @@
 	
 	function drawChart() {
 		//var jsonData = document.getElementById("xID").value;
-		var data = new google.visualization.DataTable();
+		 var data = new google.visualization.DataTable();
 		
 		data.addColumn('string', 'Lectura');
 		data.addColumn('number', 'CO');
@@ -31,10 +31,18 @@
 		data.addRows([<c:forEach items="${listCharts}" var="unMedidor">
 	                        [ '${unMedidor.timelectura}', ${unMedidor.nivelCO}, ${unMedidor.nivelCO2}, ${unMedidor.nivelMetano} ],
 	                    </c:forEach>
-	                    ]);
+	                    ]); 
 		
+	/* 	var data = google.visualization.arrayToDataTable([
+		              ['string', 'Lectura'],['number', 'CO'],['number', 'CO2'],['number', 'Metano'],
+		              <c:forEach items="${listCharts}" var="unMedidor">
+                      [ '${unMedidor.timelectura}', ${unMedidor.nivelCO}, ${unMedidor.nivelCO2}, ${unMedidor.nivelMetano} ],
+                      </c:forEach>
+                      ]); */
+                      
+			var header = '${sensorActual}';
 		 	var options = {
-				 	title: '$(sensorActual)',
+				 	title: header,
 					hAxis: {title: 'Lecturas'},
 					vAxis: {title: 'ppm'},
 					backgroundColor: '#f1f8e9'
@@ -77,7 +85,7 @@ enlaceyear = "\"AmbientServlet?action=statistics&period=year&param=" + sensorAct
 	    </div>
 	  </li>
 	  <li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
-	  <li style="float:right"><a href="#about">LOGOUT</a></li>
+	  <li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	</ul>
     <!-- end .header --></div>
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
@@ -89,6 +97,15 @@ enlaceyear = "\"AmbientServlet?action=statistics&period=year&param=" + sensorAct
         </td>
       </tr>
     </table>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+<%
+ String volver="AmbientServlet?action=viewMedidor";
+%>
+ <div align="center">
+ 	<a href="<%=volver%>" align="center">&raquo; VOLVER &laquo;</a>
+ </div>
+	
   <!-- InstanceEndEditable --><!-- end .content --></div>
  
 <!-- end .container --></div>

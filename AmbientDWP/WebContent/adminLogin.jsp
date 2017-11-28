@@ -9,12 +9,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css" />
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
+<!-- 
 <script language="JavaScript" type="text/javascript">
 function enviar(datos){
 	document.formLink.ahref.value=datos;
     document.formLink.submit();
 }
-</script>
+</script>-->
 </head>
  
 <body bgcolor="#66CC99">
@@ -32,7 +33,7 @@ function enviar(datos){
 	<form name="formlogin" action="AmbientServlet" method="post">
 		<h2 align="center" class="header"><strong>IDENTIFICACION DE USUARIO</strong></h2>
 		<div align="center">
-		<table width="200" border="1" cellpadding="1">
+		<table width="200" border="1" cellpadding="1" bgcolor="#f1f8e9">
 			<tr>
 				<td width="55%"><div align="left"><span class="textogranate">USUARIO: </span></div></td>
 				<td width="45%"><input name="user" type="text" class="textogranatepequeño" maxlength="30"></td>
@@ -52,10 +53,11 @@ function enviar(datos){
 		<tr>
     	<td class="textogranate">
     	<% if (session != null) {  
+    		System.out.println("Login. hay session");
     		if (null!=request.getAttribute("errorMessage"))   {
         		out.println(request.getAttribute("errorMessage"));
     		}
-    	}
+    	} 
     	%>
     	</td></tr>
 	</table>

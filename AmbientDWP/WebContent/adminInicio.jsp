@@ -28,7 +28,7 @@ if (userActual == null) {
 <div class="container">
   <div class="header"><a href="#"></a>
   	 <ul>
-  	 	<li><a class="active" href="AmbientServlet?action=inicio">INICIO</a></li>
+  	 	<li><a class="active" href="#">INICIO</a></li>
 	  	<li><a href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
 	  	<li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  	<li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
@@ -37,7 +37,9 @@ if (userActual == null) {
   <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
     <h1>&nbsp;</h1>
     <div ice:editable="*">
-      <h2 align="center"><strong><font color="#0066FF">Esta es la página de Inicio del Proyecto Ambient Sensors</font></strong></h2>
+      <h2 align="center"><strong><font color="#0066FF">Bienvenido <%=userActual.getLogin() %></font></strong></h2>
+      <h1>&nbsp;</h1>
+      <h2 align="center"><strong><font color="#0066FF">Esta es la página de Inicio del Proyecto Ambiant Sensors</font></strong></h2>
     </div>
     <p>&nbsp;</p>
     <p>&nbsp;</p>

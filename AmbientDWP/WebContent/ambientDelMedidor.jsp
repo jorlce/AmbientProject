@@ -29,7 +29,7 @@
   <h2 align="center" class="header"><strong>Administración</strong></h2>
    <div align="center">
       <form id="form1" name="form1" method="post" action="">
-        <table width="418" border="1" cellpadding="1">
+        <table width="418" border="1" cellpadding="1" bgcolor="#f1f8e9">
           <tr>
             <td colspan="2"><div align="center">LISTA SENSORES</div></td>
           </tr>

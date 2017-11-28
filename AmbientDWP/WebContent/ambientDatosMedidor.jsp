@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
 <%@ page import="com.ambient.controller.*,com.ambient.dao.*, com.ambient.model.*,java.util.*" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/AmbientTmp.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
 <head>    
@@ -14,24 +15,40 @@
 </head>
 
 <body>
-<% Medidor unMedidor = null;
-unMedidor = (Medidor) request.getAttribute("unSensor");
-LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo");
-String enlaceday, enlacemonth, enlaceyear;
-System.out.println(unMedidor.getSensorlabel());
-enlaceday = "\"AmbientServlet?action=statistics&period=day&param=" + unMedidor.getSensorlabel() +"\"";
-enlacemonth = "\"AmbientServlet?action=statistics&period=month&param=" + unMedidor.getSensorlabel() +"\"";
-enlaceyear = "\"AmbientServlet?action=statistics&period=year&param=" + unMedidor.getSensorlabel() +"\"";
-System.out.println(enlaceday);
-System.out.println(enlacemonth);
-System.out.println(enlaceyear);
+<%
+Medidor unMedidor = null;
+String enlaceday = ""; String enlacemonth = ""; String enlaceyear = ""; 
+String enlace60m = ""; String enlace30m = ""; 
+String enlace15m = "";String enlace5m = "";
 
+if (request.getAttribute("errorMessage") == null) {
+	
+	unMedidor = (Medidor) session.getAttribute("medidorActual");
+	//unSensor = (SensorData) session.getAttribute("sensorActual");
+	LoginCredential userActual = (LoginCredential) session.getAttribute("userActivo");
+	
+	System.out.println(unMedidor.getSensorlabel());
+	enlaceday = "\"AmbientServlet?action=statistics&period=day&param=" + unMedidor.getSensorlabel() +"\"";
+	enlacemonth = "\"AmbientServlet?action=statistics&period=month&param=" + unMedidor.getSensorlabel() +"\"";
+	enlaceyear = "\"AmbientServlet?action=statistics&period=year&param=" + unMedidor.getSensorlabel() +"\"";
+	enlace60m = "\"AmbientServlet?action=frequency&freq=1&param=" + unMedidor.getSensorlabel() +"\"";
+	enlace30m = "\"AmbientServlet?action=frequency&freq=2&param=" + unMedidor.getSensorlabel() +"\"";
+	enlace15m = "\"AmbientServlet?action=frequency&freq=3&param=" + unMedidor.getSensorlabel() +"\"";
+	enlace5m = "\"AmbientServlet?action=frequency&freq=4&param=" + unMedidor.getSensorlabel() +"\"";
+	System.out.println(enlaceday);
+	System.out.println(enlacemonth);
+	System.out.println(enlaceyear);
+	System.out.print("Frecuencia: ");
+	System.out.println(unMedidor.getSensorMedido().getFrecuencia());
+}
 %>
 <div class="container">
   <div class="header"><a href="#"></a>
   <ul>
 	  <li><a href="AmbientServlet?action=inicio">INICIO</a></li>
 	  <li><a class="active" href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
+<% if (request.getAttribute("errorMessage") == null) {%>	  
+	  	  
 	  <li class="dropdown">
 	   <a href="javascript:void(0)" class="dropbtn">ESTADISTICA</a>
 	    <div class="dropdown-content">
@@ -40,18 +57,23 @@ System.out.println(enlaceyear);
 	      <a href=<%=enlaceyear%>>AÑO EN CURSO</a>
 	    </div>
 	  </li>
+	  <li class="dropdown">
+	   <a href="javascript:void(0)" class="dropbtn">FRECUENCIA</a>
+	    <div class="dropdown-content">
+	      <a href=<%=enlace60m%>>
+	      	<%if (unMedidor.getSensorMedido().getFrecuencia() == 1) {%>&#10003;<%} %>60 MINUTOS</a>
+	      <a href=<%=enlace30m%>>
+	      	<%if (unMedidor.getSensorMedido().getFrecuencia() == 2) {%>&#10003;<%} %>30 MINUTOS</a>
+	      <a href=<%=enlace15m%>>
+	      	<%if (unMedidor.getSensorMedido().getFrecuencia() == 3) {%>&#10003;<%} %>15 MINUTOS</a>
+	      <a href=<%=enlace5m%>>
+	      	<%if (unMedidor.getSensorMedido().getFrecuencia() == 4) {%>&#10003;<%} %>5 MINUTOS</a>
+	    </div>
+	  </li>
+<%} %>
 	  <li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  <li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	</ul>
-   <!--  <table width="961" border="1">
-      <tr bgcolor="#66CC99">
-        <th width="107"><div align="center"><a href="AmbientServlet?action=inicio">INICIO</a></div></th>
-        <th width="294"><div align="center"><a href="AmbientServlet?action=geoloc">GEOLOCALIZACION</a></div></th>
-        <th width="153"><div align="center"><a href="AmbientServlet?action=statistics">ESTADISTICAS</a></div></th>
-        <th width="260"><div align="center"><a href="AmbientServlet?action=admin">ADMINISTRACION</a></div></th>
-        <th width="113"><div align="center"><a href="AmbientServlet?action=contact">CONTACTO</a></div></th>
-      </tr>
-    </table>  -->
     
     <!-- end .header --></div>
     <div class="content"><!-- InstanceBeginEditable name="EditRegion3" -->
@@ -59,29 +81,32 @@ System.out.println(enlaceyear);
     	<div align="center"></div>
     	<p>&nbsp;</p>
     	<div align="center">
-<%
-/* Medidor unMedidor = null;
-unMedidor = (Medidor) request.getAttribute("unSensor"); */
-if (unMedidor == null){
-	System.out.println("Datos de Sensor vacios en ambientDatosMedidor.jsp");
-%>
-	 <table width="418" border="1" cellpadding="1">
-	     <tr>
-	       <td colspan="2"><div align="center">VALORES  MEDIDOR</div></td>
-	     </tr>
-	     <tr>
-	       <td colspan="2"><div align="center">NO HAY DATO DEL SENSOR</div></td>
-	     </tr>
-      </table>
-<%
-} else {	
-	System.out.println("Medidor:");
-	System.out.println(unMedidor.getSensorlabel());
-	System.out.println(unMedidor.getTemperature());
-	System.out.println(unMedidor.getHumedad());
-	System.out.println(unMedidor.getNivelCO());
-	System.out.println(unMedidor.getNivelCO2());
-	System.out.println(unMedidor.getNivelMetano());
+    	
+<% if (request.getAttribute("errorMessage") == null) {
+	
+
+	/* Medidor unMedidor = null;
+	unMedidor = (Medidor) request.getAttribute("unSensor"); */
+	if (unMedidor == null){
+		System.out.println("Datos de Sensor vacios en ambientDatosMedidor.jsp");
+	%>
+		 <table width="418" border="1" cellpadding="1">
+		     <tr>
+		       <td colspan="2"><div align="center">VALORES  MEDIDOR</div></td>
+		     </tr>
+		     <tr>
+		       <td colspan="2"><div align="center">NO HAY DATOS DEL SENSOR</div></td>
+		     </tr>
+	      </table>
+	<%
+	} else {	
+		System.out.println("Medidor:");
+		System.out.println(unMedidor.getSensorlabel());
+		System.out.println(unMedidor.getTemperature());
+		System.out.println(unMedidor.getHumedad());
+		System.out.println(unMedidor.getNivelCO());
+		System.out.println(unMedidor.getNivelCO2());
+		System.out.println(unMedidor.getNivelMetano());
 %>
       <form id="formProg" name="formProg" method="post" action="AmbientServlet">
         <table width="418" border="1" cellpadding="1" bgcolor="#f1f8e9">
@@ -123,7 +148,7 @@ if (unMedidor == null){
             	   <span class="textoOK">
                    
                <%} %>
-              <%=unMedidor.getNivelCO() %>
+              <%=unMedidor.getNivelCO() %></span>
             </div></td>
           </tr>
           <tr>
@@ -141,7 +166,7 @@ if (unMedidor == null){
             	   <span class="textoOK">
                    
                <%} %>
-              <%=unMedidor.getNivelCO2() %>
+              <%=unMedidor.getNivelCO2() %></span>
             </div></td>
           </tr>
           <tr>
@@ -159,7 +184,7 @@ if (unMedidor == null){
             	   <span class="textoOK">
                    
                <%} %>
-              <%=unMedidor.getNivelMetano() %>
+              <%=unMedidor.getNivelMetano() %></span>
             </div></td>
           </tr>
           <tr>
@@ -176,8 +201,12 @@ if (unMedidor == null){
           </tr> -->
         </table>
       </form>
-<%} 
-String volver="AmbientServlet?action=consultMedidor";
+<%	}
+} else {%>
+	<h2><span class="textoAlarm"><% out.println(request.getAttribute("errorMessage"));%></h2>
+<%
+}
+	String volver="AmbientServlet?action=consultMedidor";
 %>
 	<a href="<%=volver%>" align="center">&raquo; VOLVER &laquo;</a>
     </div>

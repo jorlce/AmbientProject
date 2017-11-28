@@ -49,6 +49,7 @@ public class AmbientServlet extends HttpServlet {
 	String ENDPOINT_BAJA_SENSOR = "/deleteSensor/";
 	String ENDPOINT_LOGIN = "/login/";
 	String ENDPOINT_ESTADISTICA = "/chart/";
+	String ENDPOINT_FRECUENCIA = "/cambiafreq";
 	
 	//Base URL for MicroService
 	String BASE_URL = "http://localhost:8080/ambientService";
@@ -66,7 +67,7 @@ public class AmbientServlet extends HttpServlet {
 	String PAGINA_BAJA_SENSOR = "/ambientDelMedidor.jsp";
 	String PAGINA_CONSULTA_SENSOR ="/ambientDatosMedidor.jsp";
 	String PAGINA_LISTA_SENSORES ="/ambientListaSensores.jsp";
-	String PAGINA_LOGIN ="/ambientLogin.jsp";
+	String PAGINA_LOGIN ="/adminLogin.jsp";
 	
 
     /**
@@ -96,7 +97,7 @@ public class AmbientServlet extends HttpServlet {
 		System.out.println(request.getParameter("ahref"));
 		System.out.println(action);
 		
-		if (action=="") {
+		if (action.equalsIgnoreCase("inicio")) {
 			System.out.println("Primera vez");
 			paginaForward = PAGINA_ADMIN_INICIO;
 		}
@@ -107,6 +108,8 @@ public class AmbientServlet extends HttpServlet {
 		else if (action.equalsIgnoreCase("admin")){
 			//System.out.println(request.getAttribute("Destino"));
 			System.out.println("Pagina de Operaciones");
+			session.removeAttribute("medidorActual");
+			//session.removeAttribute("listSensors");
 			paginaForward = PAGINA_OPERACIONES;
 			System.out.println(paginaForward);
 		}
@@ -117,25 +120,34 @@ public class AmbientServlet extends HttpServlet {
 		else if (action.equalsIgnoreCase("viewMedidor")){ 
 			System.out.println("Pagina de Ver Datos Sensor");
 			Medidor unMedidor = null;
-			endPoint = BASE_URL + ENDPOINT_CONSULTA_SENSOR +  (String) request.getParameter("param");
-			resEndPoint = callEndPoint2("GET", "", endPoint);
-			unMedidor = jdao.findSensorMeasure(resEndPoint);
-			//unMedidor.setSensorlabel((String) request.getParameter("param"));
-			if (unMedidor != null) {
-				System.out.println("Medidor:");
-				System.out.println(unMedidor.getSensorlabel());
-				System.out.println(unMedidor.getTemperature());
-				System.out.println(unMedidor.getHumedad());
-				System.out.println(unMedidor.getNivelCO());
-				System.out.println(unMedidor.getNivelCO2());
-				System.out.println(unMedidor.getNivelMetano());
-				System.out.println(unMedidor.getTimelectura());
+			if ((session.getAttribute("medidorActual") == null)) {			
+				endPoint = BASE_URL + ENDPOINT_CONSULTA_SENSOR +  (String) request.getParameter("param");
+				resEndPoint = callEndPoint2("GET", "", endPoint);
+				if ((resEndPoint.length()>0) && (!resEndPoint.equalsIgnoreCase("EMPTY"))) {
+					unMedidor = jdao.findSensorMeasure(resEndPoint);
+					//unMedidor.setSensorlabel((String) request.getParameter("param"));
+					if (unMedidor != null) {
+						System.out.println("Medidor:");
+						System.out.println(unMedidor.getSensorMedido().getSensorlabel());
+						System.out.println(unMedidor.getTemperature());
+						System.out.println(unMedidor.getHumedad());
+						System.out.println(unMedidor.getNivelCO());
+						System.out.println(unMedidor.getNivelCO2());
+						System.out.println(unMedidor.getNivelMetano());
+						System.out.println(unMedidor.getTimelectura());
+					}
+					//request.setAttribute("unSensor", unMedidor);
+					session.setAttribute("medidorActual", unMedidor);
+				} else {
+					System.out.println("No hay datos de este Sensor");
+	
+					request.setAttribute("errorMessage", "No hay datos de este Sensor");
+				}
 			}
-			request.setAttribute("unSensor", unMedidor);
 			paginaForward = PAGINA_CONSULTA_SENSOR;
 			
 		} else if (action.equalsIgnoreCase("statistics")){
-			System.out.println("Pagina de Ver Datos Sensor");
+			System.out.println("Pagina para Ver Estadísticas Sensor");
 			List<Medidor> listMedidor = null;
 			String sensorActual = (String) request.getParameter("param");
 			endPoint = BASE_URL + ENDPOINT_ESTADISTICA +  (String) request.getParameter("param") 
@@ -150,6 +162,36 @@ public class AmbientServlet extends HttpServlet {
 			request.setAttribute("sensorActual", sensorActual);
 			//System.out.println(listMedidor);
 			paginaForward = PAGINA_ESTADISTICAS;
+		} 
+		else if (action.equalsIgnoreCase("frequency")){
+			String sensorActual = (String) request.getParameter("param");
+			
+			//SensorData unSensor = (SensorData) request.getAttribute("sensorActual");
+			
+			endPoint = BASE_URL + ENDPOINT_FRECUENCIA;
+			Medidor unMedidor = (Medidor) session.getAttribute("medidorActual");
+			if (unMedidor != null) {
+				String freq = (String) request.getParameter("freq");
+				unMedidor.getSensorMedido().setFrecuencia(Integer.parseInt(freq));
+				callEndPoint2("POST",jdao.addSensorData(unMedidor.getSensorMedido()), endPoint); 
+				session.setAttribute("medidorActual", unMedidor);
+				paginaForward = PAGINA_OPERACIONES;
+			}
+			/*List<SensorData> listaSensores = (List<SensorData>) session.getAttribute("listSensors");
+			 if (listaSensores != null) {
+		        	Iterator it = listaSensores.iterator();
+		        	
+					while ((it.hasNext()) && (!inLista)){
+						unSensor =(SensorData)it.next();						
+			 	  		if (sensorActual.equals(unSensor.getSensorlabel())) {
+			 	  			inLista = true;
+			 	  			String freq = (String) request.getParameter("freq");
+							unSensor.setFrecuencia(Integer.parseInt(freq));
+							callEndPoint2("POST",jdao.addSensorData(unSensor), endPoint); 
+							paginaForward = PAGINA_OPERACIONES;
+			 	  		}
+					}
+			}*/
 		}
 		else if (action.equalsIgnoreCase("removeMedidor")){ //Show list of Sensors before deleting
 			System.out.println("Pagina de Lista Sensores");
@@ -198,6 +240,7 @@ public class AmbientServlet extends HttpServlet {
 				
 				listSensors = jdao.listaSensores(resEndPoint);
 				request.setAttribute("listSensors", listSensors);
+				//session.setAttribute("listSensors", listSensors);
 				Iterator it = listSensors.iterator();
 	        	SensorData nuevoSensor = null;
 			
@@ -293,13 +336,13 @@ public class AmbientServlet extends HttpServlet {
 					paginaForward = PAGINA_ADMIN_INICIO;
 
 				} else {
-					session.invalidate();
+					//session.invalidate();
 					request.setAttribute("errorMessage", "Usuario o Contraseñas no válidos");
 					paginaForward = PAGINA_LOGIN;
 				}
 
 			} else {
-				session.invalidate();
+				//session.invalidate();
 				request.setAttribute("errorMessage", "Sin conexión al Servidor");
 				paginaForward = PAGINA_LOGIN;
 			}

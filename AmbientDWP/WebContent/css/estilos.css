@@ -98,9 +98,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 .container .header a #Insert_logo {
 	color: #00D96C;
 }
-.container .header a #Insert_logo {
-	color: #00D96C;
-}
+
 .textoWarn {
 	color: #ffcc40;
 }

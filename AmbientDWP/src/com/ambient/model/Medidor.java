@@ -22,7 +22,7 @@ public class Medidor {
 	protected float nivelCO;
 	protected float nivelCO2;
 	protected float nivelMetano;
-	protected String sensorlabel;
+	protected SensorData sensorMedido;
 
 	//Returns the Timestamp in format ('dd MM YY hh:mm')
 	public String getTimelectura() {
@@ -41,13 +41,21 @@ public class Medidor {
 	public void setTemperatura(float temperatura) {
 		this.temperatura = temperatura;
 	}
+	
+	public SensorData getSensorMedido() {
+		return this.sensorMedido;
+	}
+	
+	public void setSensorMedido(SensorData unSensor) {
+		this.sensorMedido = unSensor;
+	}
 
 	public String getSensorlabel() {
-		return sensorlabel;
+		return sensorMedido.getSensorlabel();
 	}
 
 	public void setSensorlabel(String sensorlabel) {
-		this.sensorlabel = sensorlabel;
+		this.sensorMedido.setId(sensorlabel);
 	}
 
 	public void setIdLectura(long idLectura) {

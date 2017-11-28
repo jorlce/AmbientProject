@@ -119,12 +119,14 @@ public class SensorJSONImplementation implements SensorJSON {
 		ObjectMapper mapper = new ObjectMapper();
 		List<Medidor> listaSensores = new ArrayList<Medidor>();
 		//SensorData unSensor = new SensorData();
-		Medidor unMedidor = new Medidor();
+		
 		
 		try {
 			JsonNode rootList = mapper.readTree(arraySensorJson);
 			
 			for(JsonNode root : rootList) {
+				Medidor unMedidor = new Medidor();
+				SensorData unSensor = new SensorData();
 		
 				// Get measure values
 				unMedidor.setTimelectura(root.path("timelectura").longValue());
@@ -142,11 +144,15 @@ public class SensorJSONImplementation implements SensorJSON {
 				if (sensorNode.isMissingNode()) {
 					unMedidor.setSensorlabel("ERROR");
 				} else {
-					
-					unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
+					unSensor.setId(sensorNode.path("sensorlabel").textValue());
+					unSensor.setLatitud(sensorNode.path("latitud").floatValue());
+					unSensor.setLongitud(sensorNode.path("longitud").floatValue());
+					unSensor.setFrecuencia(sensorNode.path("frecuencia").intValue());
+					//unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
 					/*unSensor.setId(unMedidor.getSensorlabel());
 					unSensor.setLatitud(sensorNode.path("latitud").floatValue());
 					unSensor.setLongitud(sensorNode.path("longitud").floatValue());*/
+					unMedidor.setSensorMedido(unSensor);
 				}
 			
 				listaSensores.add(unMedidor);
@@ -309,10 +315,13 @@ public class SensorJSONImplementation implements SensorJSON {
 				if (sensorNode.isMissingNode()) {
 					// if "name" node is missing
 				} else {
-					unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
-					unSensor.setId(unMedidor.getSensorlabel());
+					unSensor.setId(sensorNode.path("sensorlabel").textValue());
+					//unMedidor.setSensorlabel(sensorNode.path("sensorlabel").textValue());
+					//unSensor.setId(unMedidor.getSensorlabel());
 					unSensor.setLatitud(sensorNode.path("latitud").floatValue());
 					unSensor.setLongitud(sensorNode.path("longitud").floatValue());
+					unSensor.setFrecuencia(sensorNode.path("frecuencia").intValue());
+					unMedidor.setSensorMedido(unSensor);
 				}
 			
 		}catch (JsonGenerationException e) {

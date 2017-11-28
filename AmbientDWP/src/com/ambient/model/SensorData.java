@@ -7,7 +7,16 @@ public class SensorData {
 
 	protected float latitud;
 	protected float longitud;
+	protected int frecuencia;
 	
+	public int getFrecuencia() {
+		return frecuencia;
+	}
+
+	public void setFrecuencia(int frecuencia) {
+		this.frecuencia = frecuencia;
+	}
+
 	public float getLatitud() {
 		return latitud;
 	}
