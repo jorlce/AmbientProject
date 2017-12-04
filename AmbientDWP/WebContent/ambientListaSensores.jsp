@@ -21,7 +21,6 @@
   	<ul>
   	 	<li><a  href="AmbientServlet?action=inicio">INICIO</a></li>
 	  	<li><a class="active" href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
-	  	<li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  	<li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	 </ul>
     <!-- end .header --></div>

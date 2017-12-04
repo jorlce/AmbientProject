@@ -10,6 +10,27 @@
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<script type="text/javascript">
+	function validar() {
+		
+		var datosOK = true;
+		var newlat = parseFloat(document.getElementById("newLatitud").value);
+		var newlon = parseFloat(document.getElementById("newLongitud").value);
+		
+		
+		if (!((newlat >= -90) && (newlat <= 90))) {
+			datosOK = false;
+			alert('El campo Latitud no es válido');
+		}
+		
+		if (!(( newlon >= -180) &&  (newlon <= 180))) {
+			datosOK = false;
+			alert('El campo Longitud no es válido');
+		}
+		
+		return datosOK;
+	}
+</script>
 </head>
 
 <body>
@@ -20,7 +41,6 @@
   	<ul>
   	 	<li><a href="AmbientServlet?action=inicio">INICIO</a></li>
 	  	<li><a class="active" href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
-	  	<li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  	<li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	 </ul>
   
@@ -31,7 +51,8 @@
     <div align="center"></div>
     <p>&nbsp;</p>
     <div align="center">
-      <form id="formAddSensor" name="formAddSensor" method="post" action="AmbientServlet">
+      <form id="formAddSensor" name="formAddSensor" method="post" action="AmbientServlet" 
+      	onsubmit="return validar()">
         <table width="289" border="1" cellpadding="1">
           <tr>
             <td colspan="2"><div align="center">VALORES NUEVO MEDIDOR</div></td>

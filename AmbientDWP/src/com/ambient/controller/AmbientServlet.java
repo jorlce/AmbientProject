@@ -19,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import com.ambient.dao.*;
+
 import com.ambient.model.*;
 import com.ambient.json.*;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/AmbientServlet")
 public class AmbientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private SensorDAO dao;
+	
 	private SensorJSON jdao;
     
 	// Member data (1 instance only)
@@ -52,16 +52,14 @@ public class AmbientServlet extends HttpServlet {
 	String ENDPOINT_FRECUENCIA = "/cambiafreq";
 	
 	//Base URL for MicroService
-	String BASE_URL = "http://localhost:8080/ambientService";
+	String BASE_URL = "http://jorlce.ddns.net:8080/ambientService";
 	
 	// Names and clues for JSP pages
 	String PAGINA_ERROR = "/errores.jsp";
 	String PAGINA_ESTADISTICAS = "/ambientStatistics.jsp";
 	String PAGINA_CONSULTAS ="/ambientDatosMedidor.jsp";
-	String PAGINA_GEOLOCALIZACION = "/ambientGeoLoc.jsp";
 	String PAGINA_NUEVOSENSOR = "/ambientNewMedidor.jsp";
 	String PAGINA_ADMIN_INICIO = "/adminInicio.jsp";
-	String PAGINA_CONTACTO = "ambientContacto.jsp";
 	String PAGINA_OPERACIONES = "/ambientAdmin.jsp";
 	String PAGINA_NUEVO_SENSOR = "/ambientNewMedidor.jsp";
 	String PAGINA_BAJA_SENSOR = "/ambientDelMedidor.jsp";
@@ -100,10 +98,6 @@ public class AmbientServlet extends HttpServlet {
 		if (action.equalsIgnoreCase("inicio")) {
 			System.out.println("Primera vez");
 			paginaForward = PAGINA_ADMIN_INICIO;
-		}
-		else if (action.equalsIgnoreCase("geoloc")){
-			System.out.println("Pagina de GeoLocalizacion");
-			paginaForward = PAGINA_GEOLOCALIZACION;
 		}
 		else if (action.equalsIgnoreCase("admin")){
 			//System.out.println(request.getAttribute("Destino"));
@@ -262,11 +256,7 @@ public class AmbientServlet extends HttpServlet {
 			//request.setAttribute("unSensor", unMedidor);
 			paginaForward = PAGINA_LISTA_SENSORES;
 		}
-		else if (action.equalsIgnoreCase("contact")){
-			System.out.println("Pagina de Contacto");
-			
-			paginaForward = PAGINA_CONTACTO;
-		} else if (action.equalsIgnoreCase("logout")) {
+		 else if (action.equalsIgnoreCase("logout")) {
 			session.invalidate();
 			paginaForward = PAGINA_LOGIN;
 		}

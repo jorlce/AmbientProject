@@ -12,6 +12,15 @@
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmacion');
+    var confirmIt = function (e) {
+        if (!confirm('Van a eliminarse todos los datos y lecturas de este medidor')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+</script>
 </head>
 
 <body>
@@ -21,7 +30,6 @@
   	<ul>
   	 	<li><a  href="AmbientServlet?action=inicio">INICIO</a></li>
 	  	<li><a class="active" href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
-	  	<li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  	<li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	 </ul>
     <!-- end .header --></div>
@@ -51,7 +59,7 @@
 		  %>
           		<tr>
             		<td width="230"><div align="center">
-            			<a href=<%=enlace%>><span class="textosimple">
+            			<a href=<%=enlace%> onclick="return confirm('Van a eliminarse todos los datos y lecturas de este medidor')">
             			<font color="#0066FF"><%=nuevoId%></font></span></a>
             		</div></td>
           		</tr>

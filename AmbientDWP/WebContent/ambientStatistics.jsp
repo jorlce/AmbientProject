@@ -84,7 +84,6 @@ enlaceyear = "\"AmbientServlet?action=statistics&period=year&param=" + sensorAct
 	      <a href=<%=enlaceyear%>>AÑO EN CURSO</a>
 	    </div>
 	  </li>
-	  <li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  <li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	</ul>
     <!-- end .header --></div>

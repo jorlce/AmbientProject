@@ -30,7 +30,6 @@ if (userActual == null) {
   	 <ul>
   	 	<li><a class="active" href="#">INICIO</a></li>
 	  	<li><a href="AmbientServlet?action=admin">ADMINISTRACION</a></li>
-	  	<li><a href="AmbientServlet?action=contact">CONTACTO</a></li>
 	  	<li style="float:right"><a href="AmbientServlet?action=logout">LOGOUT</a></li>
 	 </ul>
      <!-- end .header --></div>
@@ -49,9 +48,6 @@ if (userActual == null) {
     <p>&nbsp;</p>
     <p>&nbsp;</p>
   <!-- InstanceEndEditable --><!-- end .content --></div>
-  <div class="footer">
-    <p>Footer</p>
-    <!-- end .footer --></div>
 <!-- end .container --></div>
 <%}%>
 </body>
